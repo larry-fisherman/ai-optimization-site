@@ -1,0 +1,719 @@
+/* ==========================================================================
+   Legible — the Lens (hero demo)
+   Two identically laid-out layers. The machine layer differs only by
+   outlines, fills and absolutely positioned labels, so it lines up with the
+   human layer by construction.
+   Modes (on .lens[data-mode]):
+     split   — default, no-JS and reduced motion: left human, right machine
+     scan    — horizontal band sweeps top → bottom (idle / touch)
+     lens    — circular clip-path follows the pointer
+     machine — the whole machine layer
+   ========================================================================== */
+
+.lens { position: relative; margin: 0; min-width: 0; }
+
+/* ---------- controls (JS only) ---------- */
+.lens__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-xs) var(--space-s);
+  margin-bottom: var(--space-xs);
+}
+html:not(.js) .lens__bar, .lens.is-static .lens__bar { display: none; }
+
+.lens__tabs { display: flex; align-items: center; }
+.lens__tab {
+  position: relative;
+  transition: background-color var(--dur-fast) var(--ease-scan), color var(--dur-fast) var(--ease-scan);
+}
+.lens__tab + .lens__tab { margin-left: .9rem; }
+.lens__tab + .lens__tab::before {
+  /* a drawn dot, not a "·" character, so it stays out of the tabs' accessible names */
+  content: "";
+  position: absolute;
+  left: calc(-.45rem - 1.5px);
+  top: calc(50% - 1.5px);
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: var(--ink-soft);
+  pointer-events: none;
+}
+.lens__tab:hover { background: var(--lilac); }
+.lens__tab[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+
+.lens__tab, .lens__view, .lens__pause {
+  min-height: 2.25rem;
+  padding: 0 .7rem;
+  background: none;
+  border: 0;
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-s);
+  font-weight: 500;
+  letter-spacing: var(--track-mono);
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+/* Human | Machine: two aria-pressed buttons on one sliding ink block */
+.lens__views {
+  position: relative;
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+  margin-left: auto;
+  padding: 3px;
+  border: 1px solid var(--ink);
+  border-radius: var(--radius);
+  isolation: isolate;
+}
+.lens__views::before {
+  content: "";
+  position: absolute;
+  top: 3px; bottom: 3px; left: 3px;
+  width: calc(50% - 3px);
+  z-index: -1;
+  background: var(--ink);
+  border-radius: 1px;
+  transition: transform var(--dur-mid) var(--ease-scan);
+}
+.lens[data-mode="machine"] .lens__views::before { transform: translateX(100%); }
+.lens[data-mode="split"] .lens__views::before { opacity: 0; } /* reduced motion: both layers, neither pressed */
+.lens__view { min-height: calc(2.25rem - 8px); transition: color var(--dur-mid) var(--ease-scan); }
+.lens__view[aria-pressed="true"] { color: var(--paper); }
+.lens__view[aria-pressed="false"]:hover { background: var(--lilac); }
+/* focus ring inside the button, in the text colour: paper on the ink block, ink on paper */
+.lens__view:focus-visible { outline-color: currentColor; outline-offset: -4px; }
+
+.lens__pause {
+  display: inline-flex;
+  align-items: center;
+  gap: .5em;
+  border: 1px solid var(--rule-strong);
+}
+.lens__pause:hover { background: var(--lilac); }
+.lens__pause::before {
+  content: "";
+  width: .55em; height: .7em;
+  border-inline: .2em solid currentColor;
+}
+.lens.is-paused .lens__pause::before {
+  border: 0;
+  background: currentColor;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+@media (pointer: coarse) {
+  .lens__tab, .lens__pause { min-height: 2.75rem; }
+  .lens__view { min-height: 2.75rem; } /* each button, not just the group, is 44px */
+}
+
+/* ---------- stage: soft wash + crop marks ---------- */
+.lens__stage {
+  position: relative;
+  padding: clamp(.875rem, 3.2vw, 2rem);
+  background: var(--wash);
+  border-radius: var(--radius);
+}
+.lens__stage::before {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  pointer-events: none;
+  --m: var(--ink);
+  background:
+    linear-gradient(var(--m), var(--m)) 0 0 / 14px 1px,
+    linear-gradient(var(--m), var(--m)) 0 0 / 1px 14px,
+    linear-gradient(var(--m), var(--m)) 100% 0 / 14px 1px,
+    linear-gradient(var(--m), var(--m)) 100% 0 / 1px 14px,
+    linear-gradient(var(--m), var(--m)) 0 100% / 14px 1px,
+    linear-gradient(var(--m), var(--m)) 0 100% / 1px 14px,
+    linear-gradient(var(--m), var(--m)) 100% 100% / 14px 1px,
+    linear-gradient(var(--m), var(--m)) 100% 100% / 1px 14px;
+  background-repeat: no-repeat;
+  opacity: .6;
+}
+
+.lens__frame {
+  position: relative;
+  container-type: inline-size;
+  --r: clamp(64px, 20cqi, 132px);   /* same sizes as lens.js */
+  --bh: clamp(56px, 16cqi, 104px);
+  touch-action: pan-y;
+}
+
+/* ---------- business themes (fictional client sites) ---------- */
+.lens__frame[data-biz="coffee"] {
+  --m-bg: #FFFCF6;
+  --m-ink: #2A2621;
+  --m-accent: #3A2E22;
+  --m-tint: #EFE3D0;
+  --m-display: var(--font-serif);
+  --m-hl: 2.55em;
+}
+.lens__frame[data-biz="dental"] {
+  --m-bg: #FFFFFF;
+  --m-ink: #1F3346;
+  --m-accent: #3C4FA8;
+  --m-tint: #E6E9FB;
+  --m-display: var(--font-sans);
+  --m-hl: 2.05em;
+}
+.lens__frame[data-biz="saas"] {
+  --m-bg: #FBFAFF;
+  --m-ink: #1B2230;
+  --m-accent: #1B2230;
+  --m-tint: #ECE2FD;
+  --m-display: var(--font-sans);
+  --m-hl: 2.15em;
+}
+
+/* ==========================================================================
+   The mock page (both layers)
+   ========================================================================== */
+.mock {
+  font-size: clamp(9.5px, 2.45cqi, 15.5px);
+  line-height: 1.2;
+  font-family: var(--font-sans);
+  color: var(--m-ink);
+  background: var(--m-bg);
+  border: 1px solid var(--ink);
+  border-radius: 4px;
+  overflow: hidden;
+  text-align: left;
+  transform: translateZ(0);
+}
+.mock--machine {
+  position: absolute;
+  inset: 0;
+  color: var(--ink);
+  background:
+    linear-gradient(var(--rule) 1px, transparent 1px) 0 0 / 100% 1.2em,
+    linear-gradient(90deg, var(--rule) 1px, transparent 1px) 0 0 / 1.2em 100%,
+    var(--wash-machine);
+  clip-path: inset(0 0 0 50%);
+  will-change: clip-path;
+}
+
+.mock__chrome {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  height: 2.4em;
+  padding: 0 1em;
+  border-bottom: 1px solid rgba(35, 53, 70, .16);
+  background: rgba(35, 53, 70, .035);
+}
+.mock__dots { display: flex; gap: .35em; }
+.mock__dots i {
+  width: .6em; height: .6em;
+  border-radius: 50%;
+  border: 1px solid rgba(35, 53, 70, .4);
+}
+.mock__url {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  height: 1.5em;
+  padding: 0 1em;
+  border-radius: 1em;
+  background: rgba(35, 53, 70, .06);
+  font-family: var(--font-mono);
+  font-size: .72em;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.mock--machine .mock__url { background: var(--ink); color: var(--paper); gap: .4em; }
+
+.mock__page { padding: 1.4em 1.8em 1.5em; }
+
+.mock__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 1.9em;
+  margin-bottom: 1.5em;
+}
+.mock__brand { font-weight: 700; letter-spacing: -.01em; white-space: nowrap; }
+[data-biz="coffee"] .mock__brand { font-family: var(--font-serif); font-style: italic; font-weight: 400; font-size: 1.35em; }
+.mock__links { display: flex; gap: 1.3em; font-size: .8em; white-space: nowrap; }
+
+.mock__kicker {
+  height: 1.4em;
+  margin-bottom: .7em;
+  font-size: .74em;
+  font-weight: 600;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.mock__headline {
+  height: 2.16em;
+  max-width: 10.5em;
+  font-family: var(--m-display);
+  font-size: var(--m-hl);
+  line-height: 1.04;
+  letter-spacing: -.015em;
+  overflow: hidden;
+  /* plain greedy wrapping: balance/pretty pick different breaks for one text run
+     than for the machine layer's token spans, and the two layers must line up */
+  text-wrap: wrap;
+}
+[data-biz="dental"] .mock__headline,
+[data-biz="saas"] .mock__headline { font-weight: 600; letter-spacing: -.03em; }
+
+.mock__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 1.2em;
+  height: 12em;
+  margin-top: 1.3em;
+}
+.mock__visual {
+  position: relative;
+  overflow: hidden;
+  border-radius: .35em;
+  background: var(--m-tint);
+}
+.mock__visual i { position: absolute; display: block; }
+
+/* coffee: a bag on a counter, sun behind */
+[data-biz="coffee"] .mock__visual i:nth-child(1) { width: 7em; height: 7em; right: 1.2em; top: 1.1em; border-radius: 50%; background: #E5C99E; }
+[data-biz="coffee"] .mock__visual i:nth-child(2) { left: 0; right: 0; bottom: 0; height: 3em; background: #D7BC93; }
+[data-biz="coffee"] .mock__visual i:nth-child(3) { left: 2.2em; bottom: 1.6em; width: 5em; height: 7.4em; background: var(--m-accent); clip-path: polygon(8% 0, 92% 0, 100% 12%, 100% 100%, 0 100%, 0 12%); }
+[data-biz="coffee"] .mock__visual i:nth-child(4) { left: 3.1em; bottom: 4.4em; width: 3.2em; height: 1.6em; background: #FFFCF6; }
+
+/* dental: clean arcs */
+[data-biz="dental"] .mock__visual i:nth-child(1) { width: 9em; height: 9em; left: -1.5em; bottom: -3em; border-radius: 50%; background: #C9CFF5; }
+[data-biz="dental"] .mock__visual i:nth-child(2) { width: 6.5em; height: 6.5em; right: 1.4em; top: 1.2em; border-radius: 50%; border: .5em solid var(--m-accent); background: transparent; }
+[data-biz="dental"] .mock__visual i:nth-child(3) { width: 3em; height: 1.5em; right: 3.15em; top: 4.2em; border-radius: 0 0 3em 3em; background: var(--m-accent); }
+[data-biz="dental"] .mock__visual i:nth-child(4) { left: 1.4em; top: 1.4em; width: 4em; height: .6em; background: #FFFFFF; border-radius: 1em; }
+
+/* saas: a tiny dashboard */
+[data-biz="saas"] .mock__visual i:nth-child(1) { left: 1.2em; right: 1.2em; top: 1.2em; height: 2em; border-radius: .25em; background: #FFFFFF; }
+[data-biz="saas"] .mock__visual i:nth-child(2) { left: 1.2em; bottom: 1.2em; width: 1.6em; height: 4em; background: var(--m-accent); box-shadow: 2.4em -1.8em 0 var(--m-accent), 4.8em -.6em 0 var(--m-accent), 7.2em -3em 0 var(--m-accent); }
+[data-biz="saas"] .mock__visual i:nth-child(3) { right: 1.2em; bottom: 1.2em; width: 4.2em; height: 4.2em; border-radius: 50%; background: conic-gradient(var(--m-accent) 0 68%, var(--lavender) 0); }
+[data-biz="saas"] .mock__visual i:nth-child(4) { right: 2.3em; bottom: 2.3em; width: 2em; height: 2em; border-radius: 50%; background: var(--m-tint); }
+
+.mock__side {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: .7em;
+  min-width: 0;
+}
+.mock__fact {
+  display: flex;
+  flex-direction: column;
+  gap: .15em;
+  padding: .65em .85em .7em;
+  border: 1px solid rgba(35, 53, 70, .18);
+  border-radius: .35em;
+}
+.mock__fact-label {
+  font-size: .7em;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.mock__fact-value {
+  font-family: var(--m-display);
+  font-size: 2em;
+  line-height: 1;
+  white-space: nowrap;
+}
+[data-biz="dental"] .mock__fact-value,
+[data-biz="saas"] .mock__fact-value { font-weight: 600; letter-spacing: -.02em; font-size: 1.7em; }
+.mock__rating {
+  display: flex;
+  align-items: center;
+  gap: .5em;
+  font-size: .8em;
+  white-space: nowrap;
+}
+.mock__rating > .ent { display: inline-flex; align-items: center; gap: .5em; }
+/* narrow mocks: the review count drops under the stars rather than leaving its column */
+.mock__rating, .mock__rating > .ent { flex-wrap: wrap; row-gap: .15em; min-width: 0; }
+.mock__stars { color: #A9772A; letter-spacing: .05em; }
+.mock__cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.7em;
+  border-radius: .35em;
+  background: var(--m-accent);
+  color: #FFFFFF;
+  font-size: .9em;
+  font-weight: 600;
+}
+
+.mock__foot {
+  display: grid;
+  align-content: start;
+  gap: .55em;
+  height: 4.2em;
+  margin-top: 1.4em;
+  padding-top: .9em;
+  border-top: 1px solid rgba(35, 53, 70, .12);
+}
+.mock__foot i { display: block; height: .5em; border-radius: 1em; background: rgba(35, 53, 70, .1); }
+.mock__foot i:nth-child(2) { width: 82%; }
+.mock__foot i:nth-child(3) { width: 56%; }
+
+/* ==========================================================================
+   Machine-layer annotations
+   ========================================================================== */
+.mock--machine .mock__visual i,
+.mock--machine .mock__foot i { display: none; }
+
+/* entities: ink box + ink label chip */
+.ent {
+  position: relative;
+  background: rgba(205, 198, 253, .9);
+  outline: 1px solid var(--ink);
+  outline-offset: .18em;
+  border-radius: 1px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.ent::before {
+  content: attr(data-label);
+  position: absolute;
+  left: -.2em;
+  bottom: calc(100% + .22em);
+  padding: .2em .45em .15em;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: clamp(7px, .62em, 10px);
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: .06em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.mock__brand .ent::before { font-size: clamp(7px, .46em, 10px); }
+.mock__kicker .ent::before { font-size: clamp(7px, .84em, 10px); }
+.mock__fact.ent { background: rgba(205, 198, 253, .9); border-color: transparent; outline-offset: 0; }
+.mock__fact.ent::before { left: 0; bottom: auto; top: 0; transform: translateY(-100%); font-size: clamp(7px, .62em, 10px); }
+.mock__rating .ent::before { font-size: clamp(7px, .78em, 10px); }
+
+/* tokens: alternating chips so token boundaries show */
+.tok {
+  background: rgba(205, 198, 253, .95);
+  box-shadow: inset 0 0 0 1px rgba(35, 53, 70, .35);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.tok:nth-child(even) { background: rgba(227, 209, 254, 1); }
+
+.mock--machine .mock__links span { outline: 1px dashed rgba(35, 53, 70, .45); outline-offset: .15em; }
+
+/* flags: things the machine cannot use */
+.mock--machine .mock__visual {
+  display: grid;
+  place-items: center;
+  background: repeating-linear-gradient(135deg, rgba(35, 53, 70, .1) 0 1px, transparent 1px 8px);
+  outline: 1px dashed var(--ink);
+  outline-offset: -1px;
+}
+.flag,
+.mock__cta--flag::after {
+  padding: .3em .55em .25em;
+  background: var(--signal);
+  color: var(--ink);
+  box-shadow: 0 0 0 1px var(--ink);
+  font-family: var(--font-mono);
+  font-size: clamp(7px, .66em, 10.5px);
+  font-weight: 500;
+  letter-spacing: .04em;
+  line-height: 1.2;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+.flag::before, .mock__cta--flag::after { content: "✕ "; }
+.mock__cta--flag {
+  position: relative;
+  background: transparent;
+  color: var(--ink);
+  outline: 1px dashed var(--ink);
+  outline-offset: -1px;
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+.mock__cta--flag::after {
+  content: "✕ CTA: “" attr(data-label) "” — no meaning";
+  position: absolute;
+  right: -.2em;
+  bottom: calc(100% + .45em);
+  text-decoration: none;
+  font-size: clamp(7px, .72em, 11px);
+}
+
+.mock__json {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: .66em;
+  line-height: 1.45;
+  white-space: pre;
+  overflow: hidden;
+}
+.mock--machine .mock__foot { grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 1em; }
+.meter {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: .35em .6em;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: .62em;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+.meter__label { grid-column: 1 / -1; }
+.meter__track {
+  display: block;
+  width: 8em;
+  height: .8em;
+  border: 1px solid var(--ink);
+  padding: 1px;
+}
+.meter__fill {
+  display: block;
+  height: 100%;
+  width: calc(var(--v, .5) * 100%);
+  background: var(--ink);
+  transition: width var(--dur-slow) var(--ease-scan);
+}
+
+/* ==========================================================================
+   Lens, scan band, split
+   ========================================================================== */
+.lens__ring,
+.lens__band,
+.lens__readout,
+.lens__split { position: absolute; pointer-events: none; opacity: 0; }
+/* the band sweeps from above the frame to below it; this box clips it to the frame's height,
+   so it never paints over (or takes taps from) the controls above or the answer card below */
+.lens__clip { position: absolute; inset: 0 -6px; overflow: hidden; pointer-events: none; }
+
+/* human only (reduced motion, after pressing Human) */
+.lens[data-mode="human"] .mock--machine { clip-path: inset(0 0 0 100%); }
+
+/* split (default) */
+.lens__split {
+  inset: 0;
+  opacity: 1;
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  background: linear-gradient(var(--ink), var(--ink)) 50% 0 / 1px 100% no-repeat;
+}
+.lens__split::before {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0; left: 50%;
+  width: 3px;
+  transform: translateX(-50%);
+  background: var(--signal);
+  box-shadow: 0 0 0 1px var(--ink);
+}
+.lens__split span {
+  position: relative;
+  align-self: flex-end;
+  margin: 0 .5rem .6rem;
+  padding: .25em .55em .2em;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-s);
+  font-weight: 500;
+  letter-spacing: var(--track-mono);
+  text-transform: uppercase;
+}
+.lens:not([data-mode="split"]) .lens__split { opacity: 0; }
+
+/* lens. Clip-paths and positions below are written inline by lens.js. */
+.lens__ring {
+  left: 0; top: 0;
+  width: calc(var(--r) * 2);
+  height: calc(var(--r) * 2);
+  border-radius: 50%;
+  border: 3px solid var(--signal);
+  box-shadow: 0 0 0 1px var(--ink), inset 0 0 0 1px var(--ink);
+  will-change: transform;
+}
+/* registration ticks around the ring */
+.lens__ring::before {
+  content: "";
+  position: absolute;
+  inset: -12px;
+  background:
+    linear-gradient(var(--ink), var(--ink)) 50% 0 / 1px 9px,
+    linear-gradient(var(--ink), var(--ink)) 50% 100% / 1px 9px,
+    linear-gradient(var(--ink), var(--ink)) 0 50% / 9px 1px,
+    linear-gradient(var(--ink), var(--ink)) 100% 50% / 9px 1px;
+  background-repeat: no-repeat;
+}
+.lens[data-mode="lens"] .lens__ring { opacity: 1; }
+
+.lens__readout {
+  left: 0; top: 0;
+  padding: .3em .6em .25em;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: min(var(--fs-mono-s), 3.7cqi); /* the longest readout fits a 250px frame */
+  white-space: nowrap;
+  text-transform: none;
+  letter-spacing: .02em;
+  will-change: transform;
+}
+.lens[data-mode="lens"] .lens__readout { opacity: 1; }
+
+/* scan band */
+.lens__band {
+  left: 0; right: 0;   /* of .lens__clip, 6px wider than the frame on each side */
+  top: 0;
+  height: var(--bh);
+  border-block: 3px solid var(--signal);
+  box-shadow: 0 0 0 1px var(--ink), inset 0 0 0 1px var(--ink);
+  will-change: transform;
+}
+.lens[data-mode="scan"] .lens__band { opacity: 1; }
+.lens[data-mode="scan"] .lens__readout { opacity: 1; left: auto; right: 6px; }
+.lens__grip { display: none; }
+@media (pointer: coarse) {
+  .lens[data-mode="scan"] .lens__band { pointer-events: auto; touch-action: none; }
+  .lens__grip {
+    position: absolute;
+    left: 10px; top: 50%;
+    display: grid;
+    place-items: center;
+    min-width: 44px; min-height: 44px;
+    transform: translateY(-50%);
+    padding: 0 .5rem;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono-s);
+    letter-spacing: var(--track-mono);
+    text-transform: uppercase;
+    border-radius: var(--radius);
+  }
+  .lens__grip::before { content: "↕ "; }
+}
+
+/* full machine view: the readout sits just under the frame */
+.lens[data-mode="machine"] .lens__readout { opacity: 1; left: auto; top: auto; right: 0; bottom: 0; transform: translate3d(0, calc(100% + 6px), 0); }
+.lens.is-morphing .mock--machine { transition: clip-path var(--dur-slow) var(--ease-scan); }
+
+/* business switch: a scanner wipe across the frame */
+.lens__frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: var(--paper);
+  box-shadow: inset -3px 0 0 var(--signal), inset -4px 0 0 var(--ink);
+  clip-path: inset(0 100% 0 0);
+}
+.lens.is-switching .lens__frame::after { animation: wipe var(--dur-slow) var(--ease-scan); }
+@keyframes wipe {
+  0%   { clip-path: inset(0 100% 0 0); }
+  45%  { clip-path: inset(0 0 0 0); }
+  55%  { clip-path: inset(0 0 0 0); }
+  100% { clip-path: inset(0 0 0 100%); box-shadow: inset 3px 0 0 var(--signal), inset 4px 0 0 var(--ink); }
+}
+
+/* ---------- caption ---------- */
+.lens__caption {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-s);
+  margin-top: var(--space-xs);
+  color: var(--ink-soft);
+}
+.lens__legend { font-size: var(--fs-mono-s); text-transform: none; letter-spacing: .02em; }
+
+/* ==========================================================================
+   AI answer card
+   ========================================================================== */
+.answer {
+  display: grid;
+  gap: var(--space-xs);
+  margin-top: var(--space-s);
+  padding: var(--space-m) var(--space-m) var(--space-s);
+  background: var(--lilac);
+  border-left: 3px solid var(--ink);
+  border-radius: var(--radius);
+  color: var(--ink);
+}
+.answer p { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); gap: var(--space-s); align-items: baseline; }
+.answer__label { font-size: var(--fs-mono-s); font-weight: 500; }
+.answer__q span:last-child {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.375rem;
+  line-height: 1.2;
+}
+.answer__a span:last-child { font-size: var(--fs-small); line-height: 1.5; min-height: 3em; }
+.answer__source { justify-items: start; }
+.chip {
+  display: inline-block;
+  padding: .3em .6em .25em;
+  background: var(--lavender);
+  border-radius: var(--radius);
+  text-transform: none;
+  letter-spacing: .02em;
+  font-size: var(--fs-mono-s);
+}
+.answer__a > span:last-child,
+.answer__source .chip { transition: clip-path var(--dur-slow) var(--ease-scan); }
+.lens[data-answer="pending"] .answer__a > span:last-child,
+.lens[data-answer="pending"] .answer__source .chip { clip-path: inset(0 100% 0 0); }
+.lens[data-answer="pending"] .answer__a::after {
+  content: "reading…";
+  grid-area: 1 / 2;
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-s);
+  letter-spacing: var(--track-mono);
+  text-transform: uppercase;
+  animation: pulse 1.2s var(--ease-linear) 4; /* 4.8s, then still (WCAG 2.2.2) */
+}
+
+@media (max-width: 29.99em) {
+  .answer { padding-inline: var(--space-s); }
+  .answer p { grid-template-columns: minmax(0, 1fr); gap: .2rem; }
+  .lens[data-answer="pending"] .answer__a::after { grid-area: 2 / 1; }
+}
+
+/* ---------- before lens.js boots: human only, answer pending ----------
+   (failsafe: if the script is slow or never runs, everything appears after 2.5s) */
+@media (prefers-reduced-motion: no-preference) {
+  .js .lens:not(.is-ready, .is-static) :is(.mock--machine, .lens__split, .answer__a > span:last-child, .answer__source .chip) {
+    animation: boot-hide 0s 2.5s both;
+  }
+  @keyframes boot-hide { from { visibility: hidden; } to { visibility: visible; } }
+}
+
+/* ---------- lens.js failed (main.js adds .is-static): the no-JS presentation,
+   whatever state it left behind, inline styles included ---------- */
+.lens.is-static .mock--machine { clip-path: inset(0 0 0 50%) !important; }
+.lens.is-static .lens__split { opacity: 1; }
+.lens.is-static :is(.lens__ring, .lens__clip, .lens__readout) { display: none; }
+.lens.is-static :is(.answer__a > span:last-child, .answer__source .chip) { clip-path: none; }
+.lens.is-static .answer__a::after { content: none; }
+.lens.is-static .lens__frame::after { animation: none; }
+
+/* ---------- reduced motion: static split, nothing moves ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .lens.is-morphing .mock--machine,
+  .meter__fill,
+  .answer__a > span:last-child,
+  .answer__source .chip { transition: none; }
+  .lens.is-switching .lens__frame::after { animation: none; }
+  .lens__pause { display: none; } /* nothing moves on its own, so nothing to pause */
+}

@@ -1,0 +1,26 @@
+# Legible
+
+> Legible is a studio that makes websites readable by AI assistants and answer engines, so businesses get found, understood and accurately cited by ChatGPT, Gemini, Perplexity and AI search.
+
+Every website now has two readers: a person with a browser, and a language model that reads the page, decides what it believes and answers in a few sentences. Legible makes sure both come away with the same, correct picture. We work with businesses of any kind and size.
+
+## Services
+
+- AI Visibility Audit: how a business shows up across AI assistants today, and who gets cited instead.
+- Machine-Readable Foundations: schema and JSON-LD, llms.txt, semantic structure and crawl access.
+- Answer-Ready Content: restructuring pages into the clear, citable claims that language models retrieve.
+- Brand Signal Monitoring: tracking how AI describes a business over time, and fixing drift at the source.
+- Internal AI Readiness: helping teams adopt AI tools well (optional add-on).
+
+## Method
+
+1. Read: ask the assistants customers use, and map what they say and who they cite.
+2. Restructure: rebuild key pages around clear entities and citable claims.
+3. Signal: make the facts that matter consistent everywhere AI looks.
+4. Monitor: keep asking, and correct the source when answers drift.
+
+## Contact
+
+- Email: hello@example.com
+- Website: https://example.com/
+- Book an AI visibility audit: mailto:hello@example.com?subject=AI%20visibility%20audit

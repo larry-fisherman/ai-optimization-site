@@ -2,3 +2,5 @@
 .DS_Store
 dist/
 .agent/
+__pycache__/
+*.pyc

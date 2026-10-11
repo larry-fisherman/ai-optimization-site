@@ -12,6 +12,12 @@ Every website now has two readers: a person with a browser, and a language model
 - Brand Signal Monitoring: tracking how AI describes a business over time, and fixing drift at the source.
 - Internal AI Readiness: helping teams adopt AI tools well (optional add-on).
 
+## Packages
+
+- Free AI snapshot: a first look at how ChatGPT, Gemini and Perplexity describe a business today. Price: free. Timeline: PLACEHOLDER_TIMELINE_SNAPSHOT.
+- AI visibility audit: how a business shows up across AI assistants today, and who gets cited instead. Price: from PLACEHOLDER_PRICE_AUDIT. Timeline: PLACEHOLDER_TIMELINE_AUDIT.
+- Monitoring retainer: tracking how AI describes a business over time, and fixing drift at the source. Price: from PLACEHOLDER_PRICE_MONITORING. Term: PLACEHOLDER_TIMELINE_MONITORING.
+
 ## Method
 
 1. Read: ask the assistants customers use, and map what they say and who they cite.
@@ -19,8 +25,22 @@ Every website now has two readers: a person with a browser, and a language model
 3. Signal: make the facts that matter consistent everywhere AI looks.
 4. Monitor: keep asking, and correct the source when answers drift.
 
+## About
+
+- Founder: PLACEHOLDER_FOUNDER_NAME, PLACEHOLDER_FOUNDER_ROLE.
+- Area served: PLACEHOLDER_AREA_SERVED.
+
+## Pages
+
+- [AI Visibility Audit](https://example.com/ai-visibility-audit.html)
+- [Machine-Readable Foundations](https://example.com/machine-readable-foundations.html)
+- [Answer-Ready Content](https://example.com/answer-ready-content.html)
+- [Brand Signal Monitoring](https://example.com/brand-signal-monitoring.html)
+- [Internal AI Readiness](https://example.com/internal-ai-readiness.html)
+- [Privacy notice](https://example.com/privacy.html)
+
 ## Contact
 
-- Email: hello@example.com
+- Contact form: https://example.com/#contact
+- Email: PLACEHOLDER_CONTACT_EMAIL
 - Website: https://example.com/
-- Book an AI visibility audit: mailto:hello@example.com?subject=AI%20visibility%20audit

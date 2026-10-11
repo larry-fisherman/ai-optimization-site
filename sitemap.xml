@@ -1,8 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- PLACEHOLDER: domain (https://example.com) -->
+<!-- PLACEHOLDER_SITE_URL: https://example.com -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://example.com/</loc>
-    <lastmod>2026-10-09</lastmod>
+    <lastmod>2026-10-11</lastmod>
+  </url>
+  <url>
+    <loc>https://example.com/ai-visibility-audit.html</loc>
+    <lastmod>2026-10-11</lastmod>
+  </url>
+  <url>
+    <loc>https://example.com/machine-readable-foundations.html</loc>
+    <lastmod>2026-10-11</lastmod>
+  </url>
+  <url>
+    <loc>https://example.com/answer-ready-content.html</loc>
+    <lastmod>2026-10-11</lastmod>
+  </url>
+  <url>
+    <loc>https://example.com/brand-signal-monitoring.html</loc>
+    <lastmod>2026-10-11</lastmod>
+  </url>
+  <url>
+    <loc>https://example.com/internal-ai-readiness.html</loc>
+    <lastmod>2026-10-11</lastmod>
+  </url>
+  <url>
+    <loc>https://example.com/privacy.html</loc>
+    <lastmod>2026-10-11</lastmod>
   </url>
 </urlset>

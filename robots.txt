@@ -14,5 +14,5 @@ User-agent: Applebot-Extended
 User-agent: CCBot
 Allow: /
 
-# PLACEHOLDER: domain (https://example.com)
+# PLACEHOLDER_SITE_URL
 Sitemap: https://example.com/sitemap.xml

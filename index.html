@@ -9,8 +9,8 @@
   <meta name="theme-color" content="#F3F6FE">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="alternate" type="text/markdown" href="llms.txt" title="llms.txt">
-  <!-- PLACEHOLDER: domain. https://example.com is used for canonical, Open Graph, JSON-LD, sitemap and robots. -->
-  <!-- PLACEHOLDER: contact email. hello@example.com is also in the JSON-LD below (JSON can't carry a comment). -->
+  <!-- PLACEHOLDER_SITE_URL: every https://example.com (canonical, Open Graph, JSON-LD, sitemap, robots, llms.txt). JSON can't carry a comment, so it is named here. -->
+  <!-- PLACEHOLDER_LOGO: the JSON-LD "logo" URL below (stand-in: assets/favicon.svg). -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Legible">
   <meta property="og:url" content="https://example.com/">
@@ -34,7 +34,7 @@
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/hero.css">
   <script type="module" src="js/main.js"></script>
-  <!-- JSON-LD: keep identical to the copy shown in section [04] -->
+  <!-- JSON-LD: keep identical to the copy shown in section [06] -->
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -44,9 +44,20 @@
       "@id": "https://example.com/#org",
       "name": "Legible",
       "url": "https://example.com/",
-      "email": "hello@example.com",
+      "logo": "https://example.com/assets/favicon.svg",
+      "email": "PLACEHOLDER_CONTACT_EMAIL",
       "description": "A studio that makes websites readable by AI assistants and answer engines, so businesses get found, understood and accurately cited.",
-      "knowsAbout": ["Answer engine optimization", "Generative engine optimization", "Structured data", "llms.txt"]
+      "knowsAbout": ["Answer engine optimization", "Generative engine optimization", "Structured data"],
+      "areaServed": "PLACEHOLDER_AREA_SERVED",
+      "sameAs": ["https://www.linkedin.com/company/PLACEHOLDER_COMPANY_LINKEDIN"],
+      "founder": {
+        "@type": "Person",
+        "@id": "https://example.com/#founder",
+        "name": "PLACEHOLDER_FOUNDER_NAME",
+        "jobTitle": "PLACEHOLDER_FOUNDER_ROLE",
+        "image": "https://example.com/assets/founder-placeholder.svg",
+        "sameAs": ["https://www.linkedin.com/in/PLACEHOLDER_FOUNDER_LINKEDIN"]
+      }
     },
     {
       "@type": "WebSite",
@@ -58,6 +69,8 @@
     },
     {
       "@type": "Service",
+      "@id": "https://example.com/ai-visibility-audit.html#service",
+      "url": "https://example.com/ai-visibility-audit.html",
       "name": "AI Visibility Audit",
       "serviceType": "AI visibility audit",
       "description": "How a business shows up across ChatGPT, Gemini, Perplexity and AI search today, and who gets cited instead.",
@@ -65,13 +78,17 @@
     },
     {
       "@type": "Service",
+      "@id": "https://example.com/machine-readable-foundations.html#service",
+      "url": "https://example.com/machine-readable-foundations.html",
       "name": "Machine-Readable Foundations",
       "serviceType": "Structured data and technical AI optimization",
-      "description": "Schema and JSON-LD, llms.txt, semantic structure and crawl access.",
+      "description": "Schema and JSON-LD, semantic structure and crawl access, plus supporting files such as llms.txt.",
       "provider": { "@id": "https://example.com/#org" }
     },
     {
       "@type": "Service",
+      "@id": "https://example.com/answer-ready-content.html#service",
+      "url": "https://example.com/answer-ready-content.html",
       "name": "Answer-Ready Content",
       "serviceType": "Content restructuring for AI answers",
       "description": "Restructuring pages into the clear, citable claims that language models retrieve.",
@@ -79,6 +96,8 @@
     },
     {
       "@type": "Service",
+      "@id": "https://example.com/brand-signal-monitoring.html#service",
+      "url": "https://example.com/brand-signal-monitoring.html",
       "name": "Brand Signal Monitoring",
       "serviceType": "AI brand monitoring",
       "description": "Tracking how AI describes a business over time, and fixing drift at the source.",
@@ -86,6 +105,8 @@
     },
     {
       "@type": "Service",
+      "@id": "https://example.com/internal-ai-readiness.html#service",
+      "url": "https://example.com/internal-ai-readiness.html",
       "name": "Internal AI Readiness",
       "serviceType": "AI enablement and adoption",
       "description": "Helping teams adopt AI tools well: practical enablement, shared guidelines and workflows.",
@@ -94,25 +115,69 @@
   ]
 }
   </script>
+  <!-- FAQPage JSON-LD: keep each answer identical to the visible text in section [08] -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is this just SEO?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "They overlap: both need a site that machines can crawl and parse. The difference is the reader. Search used to return links. Now it returns answers, and an assistant that can’t make sense of your site paraphrases a competitor whose site it could read."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can you guarantee we’ll be cited?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The assistants decide what they cite, and nobody outside them can promise a place in their answers. We improve the odds by making your site clear to them, and we measure what they say about you over time."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How long until we see results?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "PLACEHOLDER_FAQ_TIME_TO_RESULTS"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need a new website?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. We work with the site you have, and rebuild key pages rather than the whole site."
+      }
+    }
+  ]
+}
+  </script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 
+  <!-- BEGIN shared:header -->
   <header class="site-header">
     <div class="wrap site-header__inner">
-      <a class="wordmark" href="#top" aria-label="Legible, back to top">Legible<span class="wordmark__lens" aria-hidden="true"></span></a>
+      <a class="wordmark" href="./#top" aria-label="Legible, home">Legible<span class="wordmark__lens" aria-hidden="true"></span></a>
       <nav class="site-nav" aria-label="Primary">
         <button class="site-nav__toggle" type="button" aria-expanded="false" aria-controls="site-nav-list">Menu</button>
         <ul class="site-nav__list" id="site-nav-list">
-          <li><a href="#services">Services</a></li>
-          <li><a href="#method">Method</a></li>
-          <li><a href="#proof">Proof</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li><a href="./#services">Services</a></li>
+          <li><a href="./#packages">Packages</a></li>
+          <li><a href="./#method">Method</a></li>
+          <li><a href="./#about">About</a></li>
+          <li><a href="./#faq">FAQ</a></li>
+          <li><a href="./#contact">Contact</a></li>
         </ul>
       </nav>
-      <p class="site-header__status mono" aria-hidden="true"><span class="status-dot"></span>indexed</p>
     </div>
   </header>
+  <!-- END shared:header -->
 
   <main id="main" tabindex="-1">
 
@@ -124,8 +189,7 @@
           <h1 class="hero__title" id="hero-title">Your website has a new reader. <em>Make sure it understands&nbsp;you.</em></h1>
           <p class="hero__sub">Legible gets businesses found, understood and cited by ChatGPT, Gemini, Perplexity and AI&nbsp;search, by making your site as clear to machines as it is to people.</p>
           <div class="hero__actions">
-            <!-- PLACEHOLDER: CTA destination (mailto) -->
-            <a class="button" href="mailto:hello@example.com?subject=AI%20visibility%20audit">Get an AI visibility audit</a>
+            <a class="button" href="#contact" data-track="CTA Click">Get an AI visibility audit</a>
             <a class="link-arrow" href="#lens">See how AI reads you <span aria-hidden="true">↓</span></a>
           </div>
           <p class="hero__note mono" aria-hidden="true"><span>H1</span> 1 claim · 2 sentences · 0 jargon</p>
@@ -261,42 +325,84 @@
           <ol class="services__list">
             <li class="service" data-reveal>
               <span class="service__num mono" aria-hidden="true">S—01</span>
-              <h3 class="service__title">AI Visibility Audit</h3>
+              <h3 class="service__title"><a href="ai-visibility-audit.html">AI Visibility Audit</a></h3>
               <p class="service__desc">How you show up across ChatGPT, Gemini, Perplexity and AI search today, and who gets cited instead of you.</p>
               <span class="service__tag mono" aria-hidden="true"><span>Audit</span></span>
             </li>
             <li class="service" data-reveal>
               <span class="service__num mono" aria-hidden="true">S—02</span>
-              <h3 class="service__title">Machine-Readable Foundations</h3>
-              <p class="service__desc">Schema and JSON-LD, <code>llms.txt</code>, semantic structure and crawl access, so machines can parse what people already understand.</p>
-              <span class="service__tag mono" aria-hidden="true"><span>Schema · llms.txt</span></span>
+              <h3 class="service__title"><a href="machine-readable-foundations.html">Machine-Readable Foundations</a></h3>
+              <p class="service__desc">Schema and JSON-LD, semantic structure and crawl access, so machines can parse what people already understand. Plus supporting files such as <code>llms.txt</code>.</p>
+              <span class="service__tag mono" aria-hidden="true"><span>Schema</span></span>
             </li>
             <li class="service" data-reveal>
               <span class="service__num mono" aria-hidden="true">S—03</span>
-              <h3 class="service__title">Answer-Ready Content</h3>
+              <h3 class="service__title"><a href="answer-ready-content.html">Answer-Ready Content</a></h3>
               <p class="service__desc">Restructuring your pages into the clear, citable claims that language models retrieve and quote.</p>
               <span class="service__tag mono" aria-hidden="true"><span>Content</span></span>
             </li>
             <li class="service" data-reveal>
               <span class="service__num mono" aria-hidden="true">S—04</span>
-              <h3 class="service__title">Brand Signal Monitoring</h3>
+              <h3 class="service__title"><a href="brand-signal-monitoring.html">Brand Signal Monitoring</a></h3>
               <p class="service__desc">Tracking how AI describes you over time, and fixing the source when the description drifts.</p>
               <span class="service__tag mono" aria-hidden="true"><span>Monitoring</span></span>
             </li>
           </ol>
           <details class="services__more" data-reveal>
             <summary><span class="mono" aria-hidden="true">S—05</span> Also: Internal AI Readiness</summary>
-            <p>Helping your own team adopt AI tools well: practical enablement, shared guidelines and workflows that hold up after we leave.</p>
+            <p>Helping your own team adopt AI tools well: practical enablement, shared guidelines and workflows that hold up after we leave. <a href="internal-ai-readiness.html">More about Internal AI Readiness</a></p>
           </details>
         </div>
       </div>
     </section>
 
-    <!-- [03] METHOD -->
+    <!-- [03] PACKAGES -->
+    <section class="section packages" id="packages" aria-labelledby="packages-title">
+      <div class="wrap grid">
+        <div class="section__margin">
+          <p class="tag" aria-hidden="true">[03 / PACKAGES]</p>
+        </div>
+        <div class="section__main">
+          <h2 class="section__title" id="packages-title" data-reveal>Three ways <em>to start.</em></h2>
+          <!-- Prices (PLACEHOLDER_PRICE_MONITORING includes the billing unit) and timelines are placeholders: set them before launch. -->
+          <ol class="packages__list">
+            <li class="package" data-reveal>
+              <h3 class="package__title">Free AI snapshot</h3>
+              <p class="package__scope">A first look at how ChatGPT, Gemini and Perplexity describe your business today.</p>
+              <dl class="package__terms">
+                <div><dt>Price</dt><dd>Free</dd></div>
+                <div><dt>Timeline</dt><dd>PLACEHOLDER_TIMELINE_SNAPSHOT</dd></div>
+              </dl>
+              <a class="button" href="#contact" data-track="CTA Click" data-track-label="Package: Free AI snapshot">Ask for a snapshot</a>
+            </li>
+            <li class="package" data-reveal>
+              <h3 class="package__title">AI visibility audit</h3>
+              <p class="package__scope">How you show up across ChatGPT, Gemini, Perplexity and AI search today, and who gets cited instead of you.</p>
+              <dl class="package__terms">
+                <div><dt>Price</dt><dd>from PLACEHOLDER_PRICE_AUDIT</dd></div>
+                <div><dt>Timeline</dt><dd>PLACEHOLDER_TIMELINE_AUDIT</dd></div>
+              </dl>
+              <a class="button" href="#contact" data-track="CTA Click" data-track-label="Package: AI visibility audit">Book an audit</a>
+            </li>
+            <li class="package" data-reveal>
+              <h3 class="package__title">Monitoring retainer</h3>
+              <p class="package__scope">Tracking how AI describes you over time, and fixing the source when the description drifts.</p>
+              <dl class="package__terms">
+                <div><dt>Price</dt><dd>from PLACEHOLDER_PRICE_MONITORING</dd></div>
+                <div><dt>Term</dt><dd>PLACEHOLDER_TIMELINE_MONITORING</dd></div>
+              </dl>
+              <a class="button" href="#contact" data-track="CTA Click" data-track-label="Package: Monitoring retainer">Ask about monitoring</a>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- [04] METHOD -->
     <section class="section method" id="method" aria-labelledby="method-title">
       <div class="wrap grid">
         <div class="section__margin">
-          <p class="tag" aria-hidden="true">[03 / METHOD]</p>
+          <p class="tag" aria-hidden="true">[04 / METHOD]</p>
         </div>
         <div class="section__main">
           <h2 class="section__title" id="method-title" data-reveal>A method you can <em>watch work.</em></h2>
@@ -312,7 +418,7 @@
             <li class="step">
               <span class="step__num mono" aria-hidden="true">02</span>
               <h3 class="step__title">Restructure</h3>
-              <p>We rebuild key pages around clear entities and citable claims, with schema, semantic HTML and an <code>llms.txt</code>.</p>
+              <p>We rebuild key pages around clear entities and citable claims, with schema and semantic HTML.</p>
             </li>
             <li class="step">
               <span class="step__num mono" aria-hidden="true">03</span>
@@ -329,60 +435,62 @@
       </div>
     </section>
 
-    <!-- [04] PROOF -->
+    <!-- [05] HOW WE MEASURE -->
+    <section class="section measure" id="measure" aria-labelledby="measure-title">
+      <div class="wrap grid">
+        <div class="section__margin">
+          <p class="tag" aria-hidden="true">[05 / HOW WE MEASURE]</p>
+        </div>
+        <div class="section__main">
+          <h2 class="section__title" id="measure-title" data-reveal>How we <em>measure it.</em></h2>
+          <p class="lede" data-reveal>We ask a fixed set of questions, the same way each time, across ChatGPT, Perplexity, Gemini and Google AI Overviews. Then we track what comes back.</p>
+          <dl class="measures" data-reveal>
+            <div class="measures__item">
+              <dt>Mention rate</dt>
+              <dd>The share of answers that name you.</dd>
+            </div>
+            <div class="measures__item">
+              <dt>Citation rate</dt>
+              <dd>The share of answers that link to or cite your site.</dd>
+            </div>
+            <div class="measures__item">
+              <dt>AI referral traffic</dt>
+              <dd>Visits that come from AI assistants, from your own analytics.</dd>
+            </div>
+            <div class="measures__item">
+              <dt>Accuracy</dt>
+              <dd>Whether what they say about you is correct.</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- [06] PROOF -->
     <section class="section proof" id="proof" aria-labelledby="proof-title">
       <div class="wrap grid">
         <div class="section__margin">
-          <p class="tag" aria-hidden="true">[04 / PROOF]</p>
+          <p class="tag" aria-hidden="true">[06 / PROOF]</p>
         </div>
         <div class="proof__human">
           <h2 class="section__title" id="proof-title" data-reveal>This page is <em>optimized&nbsp;too.</em></h2>
           <p class="lede" data-reveal>Don’t take our word for it. View source.</p>
           <ul class="checklist" data-reveal>
             <li>Semantic landmarks and a single, clear <code>h1</code></li>
-            <li><code>Organization</code>, <code>WebSite</code> and <code>Service</code> structured data</li>
-            <li>An <a href="llms.txt"><code>llms.txt</code></a> at the root, written for language models</li>
+            <li><code>Organization</code>, <code>WebSite</code>, <code>Service</code> and <code>FAQPage</code> structured data</li>
             <li>A <a href="robots.txt"><code>robots.txt</code></a> that welcomes AI crawlers, plus a sitemap</li>
-            <li>Self-hosted fonts and no third-party scripts</li>
+            <li>Self-hosted fonts, no cookies, and only cookieless analytics, when enabled</li>
+            <li>Plus an <a href="llms.txt"><code>llms.txt</code></a> for the models that read one</li>
           </ul>
+          <figure class="research" data-reveal>
+            <p class="research__finding">Aggarwal et al., “GEO: Generative Engine Optimization,” KDD 2024, found adding citations, quotations and statistics made pages up to 40% more visible in AI answers.</p>
+            <figcaption class="research__source mono">Source: <cite><a href="https://arxiv.org/abs/2311.09735" rel="noopener">Aggarwal et al., “GEO: Generative Engine Optimization,” KDD 2024</a></cite></figcaption>
+          </figure>
+          <p class="research__pilot">Pilot results publishing soon.</p>
         </div>
         <div class="proof__machine" data-reveal>
-          <!-- Keep both snippets identical to /llms.txt and the JSON-LD in <head>. -->
+          <!-- Keep identical to the main @graph JSON-LD in <head> (not the FAQPage script). -->
           <div class="panel">
-            <div class="panel__block">
-              <div class="panel__head">
-                <span class="panel__file mono">/llms.txt</span>
-                <span class="panel__type mono" aria-hidden="true">text/markdown</span>
-                <button class="copy mono" type="button" data-copy="src-llms">Copy<span class="visually-hidden"> llms.txt</span></button>
-                <span class="copy__status mono" aria-live="polite"></span>
-              </div>
-              <pre class="panel__code" id="src-llms" tabindex="0" role="region" aria-label="llms.txt source"># Legible
-
-&gt; Legible is a studio that makes websites readable by AI assistants and answer engines, so businesses get found, understood and accurately cited by ChatGPT, Gemini, Perplexity and AI search.
-
-Every website now has two readers: a person with a browser, and a language model that reads the page, decides what it believes and answers in a few sentences. Legible makes sure both come away with the same, correct picture. We work with businesses of any kind and size.
-
-## Services
-
-- AI Visibility Audit: how a business shows up across AI assistants today, and who gets cited instead.
-- Machine-Readable Foundations: schema and JSON-LD, llms.txt, semantic structure and crawl access.
-- Answer-Ready Content: restructuring pages into the clear, citable claims that language models retrieve.
-- Brand Signal Monitoring: tracking how AI describes a business over time, and fixing drift at the source.
-- Internal AI Readiness: helping teams adopt AI tools well (optional add-on).
-
-## Method
-
-1. Read: ask the assistants customers use, and map what they say and who they cite.
-2. Restructure: rebuild key pages around clear entities and citable claims.
-3. Signal: make the facts that matter consistent everywhere AI looks.
-4. Monitor: keep asking, and correct the source when answers drift.
-
-## Contact
-
-- Email: hello@example.com
-- Website: https://example.com/
-- Book an AI visibility audit: mailto:hello@example.com?subject=AI%20visibility%20audit</pre>
-            </div>
             <div class="panel__block">
               <div class="panel__head">
                 <span class="panel__file mono">JSON-LD</span>
@@ -398,9 +506,20 @@ Every website now has two readers: a person with a browser, and a language model
       "@id": "https://example.com/#org",
       "name": "Legible",
       "url": "https://example.com/",
-      "email": "hello@example.com",
+      "logo": "https://example.com/assets/favicon.svg",
+      "email": "PLACEHOLDER_CONTACT_EMAIL",
       "description": "A studio that makes websites readable by AI assistants and answer engines, so businesses get found, understood and accurately cited.",
-      "knowsAbout": ["Answer engine optimization", "Generative engine optimization", "Structured data", "llms.txt"]
+      "knowsAbout": ["Answer engine optimization", "Generative engine optimization", "Structured data"],
+      "areaServed": "PLACEHOLDER_AREA_SERVED",
+      "sameAs": ["https://www.linkedin.com/company/PLACEHOLDER_COMPANY_LINKEDIN"],
+      "founder": {
+        "@type": "Person",
+        "@id": "https://example.com/#founder",
+        "name": "PLACEHOLDER_FOUNDER_NAME",
+        "jobTitle": "PLACEHOLDER_FOUNDER_ROLE",
+        "image": "https://example.com/assets/founder-placeholder.svg",
+        "sameAs": ["https://www.linkedin.com/in/PLACEHOLDER_FOUNDER_LINKEDIN"]
+      }
     },
     {
       "@type": "WebSite",
@@ -412,6 +531,8 @@ Every website now has two readers: a person with a browser, and a language model
     },
     {
       "@type": "Service",
+      "@id": "https://example.com/ai-visibility-audit.html#service",
+      "url": "https://example.com/ai-visibility-audit.html",
       "name": "AI Visibility Audit",
       "serviceType": "AI visibility audit",
       "description": "How a business shows up across ChatGPT, Gemini, Perplexity and AI search today, and who gets cited instead.",
@@ -419,13 +540,17 @@ Every website now has two readers: a person with a browser, and a language model
     },
     {
       "@type": "Service",
+      "@id": "https://example.com/machine-readable-foundations.html#service",
+      "url": "https://example.com/machine-readable-foundations.html",
       "name": "Machine-Readable Foundations",
       "serviceType": "Structured data and technical AI optimization",
-      "description": "Schema and JSON-LD, llms.txt, semantic structure and crawl access.",
+      "description": "Schema and JSON-LD, semantic structure and crawl access, plus supporting files such as llms.txt.",
       "provider": { "@id": "https://example.com/#org" }
     },
     {
       "@type": "Service",
+      "@id": "https://example.com/answer-ready-content.html#service",
+      "url": "https://example.com/answer-ready-content.html",
       "name": "Answer-Ready Content",
       "serviceType": "Content restructuring for AI answers",
       "description": "Restructuring pages into the clear, citable claims that language models retrieve.",
@@ -433,6 +558,8 @@ Every website now has two readers: a person with a browser, and a language model
     },
     {
       "@type": "Service",
+      "@id": "https://example.com/brand-signal-monitoring.html#service",
+      "url": "https://example.com/brand-signal-monitoring.html",
       "name": "Brand Signal Monitoring",
       "serviceType": "AI brand monitoring",
       "description": "Tracking how AI describes a business over time, and fixing drift at the source.",
@@ -440,6 +567,8 @@ Every website now has two readers: a person with a browser, and a language model
     },
     {
       "@type": "Service",
+      "@id": "https://example.com/internal-ai-readiness.html#service",
+      "url": "https://example.com/internal-ai-readiness.html",
       "name": "Internal AI Readiness",
       "serviceType": "AI enablement and adoption",
       "description": "Helping teams adopt AI tools well: practical enablement, shared guidelines and workflows.",
@@ -450,46 +579,122 @@ Every website now has two readers: a person with a browser, and a language model
             </div>
           </div>
         </div>
-        <!-- PLACEHOLDER: client logos / case-study tiles. Keep hidden until real, approved proof exists. -->
+        <!-- PLACEHOLDER_CLIENT_PROOF: client logos / case-study tiles. Keep hidden until real, approved proof exists. -->
         <div class="proof__clients" hidden></div>
       </div>
     </section>
 
-    <!-- [05] CTA -->
+    <!-- [07] ABOUT -->
+    <section class="section about" id="about" aria-labelledby="about-title">
+      <div class="wrap grid">
+        <div class="section__margin">
+          <p class="tag" aria-hidden="true">[07 / ABOUT]</p>
+        </div>
+        <div class="section__main">
+          <h2 class="section__title" id="about-title" data-reveal>Who is <em>behind Legible.</em></h2>
+          <div class="about__person" data-reveal>
+            <!-- PLACEHOLDER_FOUNDER_PHOTO: replace assets/founder-placeholder.svg with a real portrait. -->
+            <img class="about__photo" src="assets/founder-placeholder.svg" alt="Portrait of PLACEHOLDER_FOUNDER_NAME" width="320" height="400" loading="lazy">
+            <div class="about__text">
+              <h3 class="about__name">PLACEHOLDER_FOUNDER_NAME</h3>
+              <p class="about__role mono">PLACEHOLDER_FOUNDER_ROLE</p>
+              <p class="about__bio">PLACEHOLDER_FOUNDER_BIO</p>
+              <a class="link-arrow" href="https://www.linkedin.com/in/PLACEHOLDER_FOUNDER_LINKEDIN" rel="noopener">LinkedIn <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- [08] FAQ: keep the answers identical to the FAQPage JSON-LD in <head>. -->
+    <section class="section faq" id="faq" aria-labelledby="faq-title">
+      <div class="wrap grid">
+        <div class="section__margin">
+          <p class="tag" aria-hidden="true">[08 / FAQ]</p>
+        </div>
+        <div class="section__main">
+          <h2 class="section__title" id="faq-title" data-reveal>Questions, <em>answered.</em></h2>
+          <div class="faq__list" data-reveal>
+            <details class="faq__item">
+              <summary>Is this just SEO?</summary>
+              <p>They overlap: both need a site that machines can crawl and parse. The difference is the reader. Search used to return links. Now it returns answers, and an assistant that can’t make sense of your site paraphrases a competitor whose site it could read.</p>
+            </details>
+            <details class="faq__item">
+              <summary>Can you guarantee we’ll be cited?</summary>
+              <p>No. The assistants decide what they cite, and nobody outside them can promise a place in their answers. We improve the odds by making your site clear to them, and we measure what they say about you over time.</p>
+            </details>
+            <details class="faq__item">
+              <summary>How long until we see results?</summary>
+              <p>PLACEHOLDER_FAQ_TIME_TO_RESULTS</p>
+            </details>
+            <details class="faq__item">
+              <summary>Do I need a new website?</summary>
+              <p>No. We work with the site you have, and rebuild key pages rather than the whole site.</p>
+            </details>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- [09] CONTACT -->
     <section class="section cta" id="contact" aria-labelledby="contact-title">
       <div class="wrap grid">
         <div class="section__margin">
-          <p class="tag tag--inverse" aria-hidden="true">[05 / CONTACT]</p>
+          <p class="tag tag--inverse" aria-hidden="true">[09 / CONTACT]</p>
         </div>
         <div class="section__main">
           <h2 class="cta__title" id="contact-title" data-reveal>Be <em>the answer.</em></h2>
           <p class="cta__body" data-reveal>Find out how ChatGPT, Gemini and Perplexity describe your business today, and what it would take to be the one they recommend.</p>
           <div class="cta__actions" data-reveal>
-            <!-- PLACEHOLDER: CTA destination (mailto) -->
-            <a class="button button--inverse" href="mailto:hello@example.com?subject=AI%20visibility%20audit">Book an audit</a>
-            <!-- PLACEHOLDER: response-time promise -->
-            <p class="cta__meta mono">response time &lt; 1 business day</p>
+            <!-- PLACEHOLDER_FORM_ENDPOINT: the form's action URL (from your form provider). -->
+            <!-- PLACEHOLDER_FORM_ENDPOINT: pre-launch notice, shown with or without JS. Delete this paragraph once the form's action is set. -->
+            <p class="contact-form__notice" data-form-notice>The form isn’t connected yet; please email <a href="mailto:PLACEHOLDER_CONTACT_EMAIL?subject=AI%20visibility%20audit" data-track="Email Fallback Click">PLACEHOLDER_CONTACT_EMAIL</a>.</p>
+            <form class="contact-form" action="PLACEHOLDER_FORM_ENDPOINT" method="POST">
+              <div class="contact-form__field">
+                <label for="cf-website">Your website</label>
+                <input id="cf-website" name="website" type="url" autocomplete="url">
+              </div>
+              <div class="contact-form__field">
+                <label for="cf-email">Your email (required)</label>
+                <input id="cf-email" name="email" type="email" autocomplete="email" required>
+              </div>
+              <div class="contact-form__field contact-form__field--wide">
+                <label for="cf-message">What would you like to know?</label>
+                <textarea id="cf-message" name="message" rows="4"></textarea>
+              </div>
+              <div class="contact-form__hp" aria-hidden="true">
+                <label for="cf-gotcha">Leave this field empty</label>
+                <input id="cf-gotcha" name="_gotcha" type="text" tabindex="-1" autocomplete="off">
+              </div>
+              <div class="contact-form__actions">
+                <button class="button button--inverse" type="submit">Send</button>
+                <p class="contact-form__status" aria-live="polite" data-form-status></p>
+              </div>
+            </form>
+            <p class="contact-form__fallback">Prefer email? <a href="mailto:PLACEHOLDER_CONTACT_EMAIL?subject=AI%20visibility%20audit" data-track="Email Fallback Click">PLACEHOLDER_CONTACT_EMAIL</a></p>
+            <p class="cta__meta mono">PLACEHOLDER_RESPONSE_TIME</p>
           </div>
         </div>
       </div>
     </section>
   </main>
 
+  <!-- BEGIN shared:footer -->
   <footer class="site-footer">
     <div class="wrap site-footer__inner">
       <div class="site-footer__brand">
-        <a class="wordmark" href="#top" aria-label="Legible, back to top">Legible<span class="wordmark__lens" aria-hidden="true"></span></a>
+        <a class="wordmark" href="./#top" aria-label="Legible, home">Legible<span class="wordmark__lens" aria-hidden="true"></span></a>
         <p class="mono site-footer__sign">// readable by humans and machines</p>
       </div>
       <ul class="site-footer__links">
-        <!-- PLACEHOLDER: contact email -->
-        <li><a href="mailto:hello@example.com">hello@example.com</a></li>
+        <li><a href="mailto:PLACEHOLDER_CONTACT_EMAIL">PLACEHOLDER_CONTACT_EMAIL</a></li>
+        <li><a href="privacy.html">Privacy</a></li>
         <li><a href="llms.txt">/llms.txt</a></li>
-        <li><a href="#top">Back to top <span aria-hidden="true">↑</span></a></li>
+        <li><a href="#main">Back to top <span aria-hidden="true">↑</span></a></li>
       </ul>
-      <!-- PLACEHOLDER: copyright year (static) -->
-      <p class="site-footer__legal">© 2026 Legible</p>
+      <p class="site-footer__legal">© <span data-year>2026</span> Legible</p>
     </div>
   </footer>
+  <!-- END shared:footer -->
 </body>
 </html>

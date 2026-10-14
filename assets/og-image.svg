@@ -1,55 +1,45 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-  <!-- Source for og-image.png (1200x630). Re-render: open in Chrome at 1200x630 and screenshot (see README). -->
+  <!-- Source for og-image.png (1200x630). Re-render after editing (see README).
+       Hex values repeat css/tokens.css (XML comments can't hold a double hyphen, so the
+       tokens are named without it): night #071A2E, Mist #E5E7EB (second line at the fg-soft
+       alpha .66), Blue #3B82F6; the mark's gradient is the wordmark's. -->
   <defs>
     <style>
-      @font-face { font-family: "IS"; src: url("../fonts/InstrumentSerif-Regular.woff2") format("woff2"); }
-      @font-face { font-family: "IS"; font-style: italic; src: url("../fonts/InstrumentSerif-Italic.woff2") format("woff2"); }
-      @font-face { font-family: "JB"; font-weight: 500; src: url("../fonts/JetBrainsMono-Medium.woff2") format("woff2"); }
-      .serif { font-family: "IS", Georgia, serif; fill: #233546; }
-      .mono { font-family: "JB", Menlo, monospace; font-weight: 500; font-size: 18px; letter-spacing: 1.2px; }
+      @font-face { font-family: "Geist"; font-weight: 100 900; src: url("../fonts/Geist-Variable.woff2") format("woff2"); }
+      .sans { font-family: "Geist", system-ui, sans-serif; }
     </style>
-    <linearGradient id="wash" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#CDC6FD" stop-opacity=".75"/>
-      <stop offset="1" stop-color="#E3D1FE" stop-opacity=".55"/>
+    <!-- the L mark: same paths and gradient as the wordmark in the shared header/footer -->
+    <linearGradient id="mark" x1="0" y1="0" x2="0" y2="128" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#60A5FA"/>
+      <stop offset=".55" stop-color="#3B82F6"/>
+      <stop offset="1" stop-color="#2563EB"/>
     </linearGradient>
-    <clipPath id="lens"><circle cx="930" cy="300" r="150"/></clipPath>
-    <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
-      <path d="M24 0H0V24" fill="none" stroke="#233546" stroke-opacity=".14"/>
-    </pattern>
+    <!-- one soft Blue bloom, top-right; no rim -->
+    <radialGradient id="bloom" cx="1010" cy="40" r="640" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3B82F6" stop-opacity=".22"/>
+      <stop offset=".55" stop-color="#3B82F6" stop-opacity=".08"/>
+      <stop offset="1" stop-color="#3B82F6" stop-opacity="0"/>
+    </radialGradient>
   </defs>
-  <rect width="1200" height="630" fill="#F3F6FE"/>
-  <rect x="740" y="0" width="460" height="630" fill="url(#wash)"/>
-  <!-- hairlines and registration marks -->
-  <path d="M0 96H1200M0 534H1200" stroke="#233546" stroke-opacity=".14"/>
-  <path d="M64 90v12M58 96h12M1136 90v12M1130 96h12M64 528v12M58 534h12M1136 528v12M1130 534h12" stroke="#233546" stroke-opacity=".6"/>
-  <!-- wordmark -->
-  <text x="64" y="66" class="serif" font-style="italic" font-size="40">Legible</text>
-  <circle cx="174" cy="40" r="6" fill="#D9B07B" stroke="#233546"/>
-  <g transform="translate(870 38)"><rect width="266" height="32" fill="#CDC6FD"/><text x="14" y="22" class="mono" fill="#233546">AI VISIBILITY STUDIO</text></g>
-  <!-- headline -->
-  <text class="serif" font-size="92" letter-spacing="-1.5">
-    <tspan x="64" y="232">Your website has</tspan>
-    <tspan x="64" y="318">a new reader.</tspan>
-    <tspan x="64" y="420" font-style="italic">Make sure it</tspan>
-    <tspan x="64" y="506" font-style="italic">understands you.</tspan>
-  </text>
-  <!-- the lens: words chipped into tokens -->
-  <g clip-path="url(#lens)">
-    <rect x="770" y="140" width="320" height="320" fill="#EAE6FE"/>
-    <rect x="770" y="140" width="320" height="320" fill="url(#grid)"/>
-    <g font-family="JB, monospace" font-weight="500" font-size="20" fill="#233546">
-      <rect x="806" y="222" width="104" height="36" fill="#CDC6FD" stroke="#233546" stroke-opacity=".35"/><text x="818" y="247">Legible</text>
-      <rect x="916" y="222" width="54" height="36" fill="#E3D1FE" stroke="#233546" stroke-opacity=".35"/><text x="928" y="247">is</text>
-      <rect x="976" y="222" width="42" height="36" fill="#CDC6FD" stroke="#233546" stroke-opacity=".35"/><text x="988" y="247">a</text>
-      <rect x="820" y="282" width="98" height="36" fill="#E3D1FE" stroke="#233546" stroke-opacity=".35"/><text x="832" y="307">studio</text>
-      <rect x="924" y="282" width="68" height="36" fill="#CDC6FD" stroke="#233546" stroke-opacity=".35"/><text x="936" y="307">for</text>
-      <rect x="998" y="282" width="42" height="36" fill="#E3D1FE" stroke="#233546" stroke-opacity=".35"/><text x="1010" y="307">AI</text>
-      <rect x="818" y="342" width="232" height="30" fill="#233546"/><text x="838" y="363" font-size="15" fill="#F3F6FE" letter-spacing="1">ORG · SERVICE · 0.98</text>
-    </g>
+  <rect width="1200" height="630" fill="#071A2E"/>
+  <rect width="1200" height="630" fill="url(#bloom)"/>
+  <!-- faint vertical grid: 6 columns between the 64px margins -->
+  <g stroke="#E5E7EB" stroke-opacity=".05" stroke-width="1">
+    <path d="M64.5 0V630M243.5 0V630M421.5 0V630M600.5 0V630M779.5 0V630M957.5 0V630M1136.5 0V630"/>
   </g>
-  <circle cx="930" cy="300" r="150" fill="none" stroke="#233546" stroke-width="7"/>
-  <circle cx="930" cy="300" r="150" fill="none" stroke="#D9B07B" stroke-width="5"/>
-  <path d="M930 132v14M930 454v14M762 300h14M1084 300h14" stroke="#233546" stroke-width="1.5"/>
-  <g transform="translate(960 440)"><rect width="196" height="30" fill="#233546"/><text x="12" y="21" class="mono" style="font-size:15px;letter-spacing:.5px" fill="#F3F6FE">reading… 9 tokens</text></g>
-  <text x="64" y="584" class="mono" fill="#56677A" style="font-size:17px">// readable by humans and machines</text>
+  <!-- logo -->
+  <g transform="translate(64 50) scale(.34)" fill="url(#mark)">
+    <path d="M0 31C0 25.6 2.4 21.6 7 18.6L32.6 1.5C35 -.1 38 1.2 38 4.2V112C38 120.8 30.8 128 22 128H9C4 128 0 124 0 119Z"/>
+    <path d="M39.6 128C36.5 128 34.6 124.9 36.2 122.3L52.8 94C54.2 91.5 55.8 90 58.7 90H108.6C111.1 90 112.5 92.7 111.1 94.7L93.4 124.6C92 127 90.6 128 87.6 128Z"/>
+  </g>
+  <text x="114" y="88" class="sans" font-size="38" font-weight="500" letter-spacing="-.8" fill="#E5E7EB">Legible</text>
+  <!-- badge: a hairline pill with a Blue dot -->
+  <rect x="64.5" y="196.5" width="226" height="43" rx="21.5" fill="#E5E7EB" fill-opacity=".04" stroke="#E5E7EB" stroke-opacity=".22"/>
+  <circle cx="88" cy="218" r="5" fill="#3B82F6"/>
+  <text x="104" y="225" class="sans" font-size="19" font-weight="400" fill="#E5E7EB">AI visibility studio</text>
+  <!-- headline: Mist at 400; the second line lighter (300) and softer -->
+  <text class="sans" font-size="74" letter-spacing="-3.3" fill="#E5E7EB">
+    <tspan x="60" y="350" font-weight="400">Your website has a new reader.</tspan>
+    <tspan x="60" y="436" font-weight="300" fill-opacity=".66">Make sure it understands you.</tspan>
+  </text>
 </svg>

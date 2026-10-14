@@ -32,6 +32,9 @@ Every website now has two readers: a person with a browser, and a language model
 
 ## Pages
 
+- [Packages and FAQ](https://example.com/packages.html)
+- [About](https://example.com/about.html)
+- [Contact](https://example.com/contact.html)
 - [AI Visibility Audit](https://example.com/ai-visibility-audit.html)
 - [Machine-Readable Foundations](https://example.com/machine-readable-foundations.html)
 - [Answer-Ready Content](https://example.com/answer-ready-content.html)
@@ -41,6 +44,6 @@ Every website now has two readers: a person with a browser, and a language model
 
 ## Contact
 
-- Contact form: https://example.com/#contact
+- Contact form: https://example.com/contact.html
 - Email: PLACEHOLDER_CONTACT_EMAIL
 - Website: https://example.com/

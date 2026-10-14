@@ -1,6 +1,12 @@
-// Mobile menu disclosure + proof copy buttons. Smooth scrolling is CSS.
+// Current-page link, mobile menu disclosure + proof copy buttons. Smooth scrolling is CSS.
 export function initNav() {
   const nav = document.querySelector('.site-nav');
+  // mark the link to the current page (/ ≡ /index.html; hash-only links are sections, not pages)
+  const path = p => p.replace(/\/index\.html$/, '/');
+  for (const a of nav.querySelectorAll('.site-nav__list a')) {
+    const u = new URL(a.getAttribute('href'), location.href);
+    if (!u.hash && path(u.pathname) === path(location.pathname)) a.setAttribute('aria-current', 'page');
+  }
   const btn = nav.querySelector('.site-nav__toggle');
   const open = () => btn.getAttribute('aria-expanded') === 'true';
   const set = v => btn.setAttribute('aria-expanded', v);

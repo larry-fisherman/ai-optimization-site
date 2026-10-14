@@ -1,7 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="6" fill="#F3F6FE"/>
-  <circle cx="16" cy="16" r="9.5" fill="#CDC6FD" stroke="#233546" stroke-width="1.5"/>
-  <circle cx="16" cy="16" r="7.4" fill="none" stroke="#D9B07B" stroke-width="2.2"/>
-  <path d="M16 3v6M16 23v6M3 16h6M23 16h6" stroke="#233546" stroke-width="1.5" stroke-linecap="round"/>
-  <circle cx="16" cy="16" r="1.8" fill="#233546"/>
+  <!-- Legible L mark, app-icon variant (brand sheet): Midnight rounded square, Blue gradient L filling ~60% of it so it reads at 16 px. Mark geometry: the same paths as the wordmark in the shared header/footer. PNG/ICO fallbacks (favicon.ico, assets/apple-touch-icon.png) are rendered from this file; see README. -->
+  <defs>
+    <linearGradient id="m" x1="0" y1="0" x2="0" y2="128" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#60A5FA"/>
+      <stop offset=".55" stop-color="#3B82F6"/>
+      <stop offset="1" stop-color="#2563EB"/>
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="7" fill="#0A2540"/>
+  <g transform="translate(6.2 4.8) scale(.175)" fill="url(#m)">
+    <path d="M0 31C0 25.6 2.4 21.6 7 18.6L32.6 1.5C35 -.1 38 1.2 38 4.2V112C38 120.8 30.8 128 22 128H9C4 128 0 124 0 119Z"/>
+    <path d="M39.6 128C36.5 128 34.6 124.9 36.2 122.3L52.8 94C54.2 91.5 55.8 90 58.7 90H108.6C111.1 90 112.5 92.7 111.1 94.7L93.4 124.6C92 127 90.6 128 87.6 128Z"/>
+  </g>
 </svg>

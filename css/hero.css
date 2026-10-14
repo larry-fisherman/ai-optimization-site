@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Legible — the Lens (hero demo)
+   Legible — the Lens (the demo in the home page's two-readers section)
    Two identically laid-out layers. The machine layer differs only by
    outlines, fills and absolutely positioned labels, so it lines up with the
    human layer by construction.
@@ -23,49 +23,46 @@
 }
 html:not(.js) .lens__bar, .lens.is-static .lens__bar { display: none; }
 
-.lens__tabs { display: flex; align-items: center; }
+/* controls sit on the night page: --fg-soft text (6.7:1), hairline pills,
+   pressed = a Mist fill with night text (14.2:1), hover = Mist at .06 */
+.lens__tabs {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+}
 .lens__tab {
   position: relative;
   transition: background-color var(--dur-fast) var(--ease-scan), color var(--dur-fast) var(--ease-scan);
 }
-.lens__tab + .lens__tab { margin-left: .9rem; }
-.lens__tab + .lens__tab::before {
-  /* a drawn dot, not a "·" character, so it stays out of the tabs' accessible names */
-  content: "";
-  position: absolute;
-  left: calc(-.45rem - 1.5px);
-  top: calc(50% - 1.5px);
-  width: 3px; height: 3px;
-  border-radius: 50%;
-  background: var(--ink-soft);
-  pointer-events: none;
-}
-.lens__tab:hover { background: var(--lilac); }
-.lens__tab[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.lens__tab:hover { background: rgba(229, 231, 235, .06); color: var(--fg); }
+.lens__tab[aria-pressed="true"] { background: var(--mist); color: var(--night); }
 
 .lens__tab, .lens__view, .lens__pause {
-  min-height: 2.25rem;
-  padding: 0 .7rem;
+  min-height: calc(2.25rem - 8px);
+  padding: 0 .9rem;
   background: none;
+  color: var(--fg-soft);
   border: 0;
-  border-radius: var(--radius);
-  font-family: var(--font-mono);
-  font-size: var(--fs-mono-s);
-  font-weight: 500;
-  letter-spacing: var(--track-mono);
-  text-transform: uppercase;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-sans);
+  font-size: .875rem;
+  font-weight: 400;
+  letter-spacing: 0;
   cursor: pointer;
 }
 
-/* Human | Machine: two aria-pressed buttons on one sliding ink block */
+/* Human | Machine: two aria-pressed buttons on one sliding Mist pill */
 .lens__views {
   position: relative;
   display: inline-grid;
   grid-template-columns: 1fr 1fr;
   margin-left: auto;
   padding: 3px;
-  border: 1px solid var(--ink);
-  border-radius: var(--radius);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
   isolation: isolate;
 }
 .lens__views::before {
@@ -74,25 +71,26 @@ html:not(.js) .lens__bar, .lens.is-static .lens__bar { display: none; }
   top: 3px; bottom: 3px; left: 3px;
   width: calc(50% - 3px);
   z-index: -1;
-  background: var(--ink);
-  border-radius: 1px;
+  background: var(--mist);
+  border-radius: var(--radius-pill);
   transition: transform var(--dur-mid) var(--ease-scan);
 }
 .lens[data-mode="machine"] .lens__views::before { transform: translateX(100%); }
 .lens[data-mode="split"] .lens__views::before { opacity: 0; } /* reduced motion: both layers, neither pressed */
 .lens__view { min-height: calc(2.25rem - 8px); transition: color var(--dur-mid) var(--ease-scan); }
-.lens__view[aria-pressed="true"] { color: var(--paper); }
-.lens__view[aria-pressed="false"]:hover { background: var(--lilac); }
-/* focus ring inside the button, in the text colour: paper on the ink block, ink on paper */
+.lens__view[aria-pressed="true"] { color: var(--night); }
+.lens__view[aria-pressed="false"]:hover { background: rgba(229, 231, 235, .06); color: var(--fg); }
+/* focus ring inside the button, in the text colour: night on the Mist pill, Mist on night */
 .lens__view:focus-visible { outline-color: currentColor; outline-offset: -4px; }
 
 .lens__pause {
   display: inline-flex;
   align-items: center;
   gap: .5em;
-  border: 1px solid var(--rule-strong);
+  min-height: 2.25rem;
+  border: 1px solid var(--line-strong);
 }
-.lens__pause:hover { background: var(--lilac); }
+.lens__pause:hover { background: rgba(229, 231, 235, .06); color: var(--fg); }
 .lens__pause::before {
   content: "";
   width: .55em; height: .7em;
@@ -106,33 +104,18 @@ html:not(.js) .lens__bar, .lens.is-static .lens__bar { display: none; }
 
 @media (pointer: coarse) {
   .lens__tab, .lens__pause { min-height: 2.75rem; }
+  .lens__tab, .lens__view { padding-inline: .75rem; }
   .lens__view { min-height: 2.75rem; } /* each button, not just the group, is 44px */
 }
 
-/* ---------- stage: soft wash + crop marks ---------- */
+/* ---------- stage: a framed Midnight panel on the night page ("a website on a dark desk") ---------- */
 .lens__stage {
   position: relative;
   padding: clamp(.875rem, 3.2vw, 2rem);
-  background: var(--wash);
-  border-radius: var(--radius);
-}
-.lens__stage::before {
-  content: "";
-  position: absolute;
-  inset: -7px;
-  pointer-events: none;
-  --m: var(--ink);
-  background:
-    linear-gradient(var(--m), var(--m)) 0 0 / 14px 1px,
-    linear-gradient(var(--m), var(--m)) 0 0 / 1px 14px,
-    linear-gradient(var(--m), var(--m)) 100% 0 / 14px 1px,
-    linear-gradient(var(--m), var(--m)) 100% 0 / 1px 14px,
-    linear-gradient(var(--m), var(--m)) 0 100% / 14px 1px,
-    linear-gradient(var(--m), var(--m)) 0 100% / 1px 14px,
-    linear-gradient(var(--m), var(--m)) 100% 100% / 14px 1px,
-    linear-gradient(var(--m), var(--m)) 100% 100% / 1px 14px;
-  background-repeat: no-repeat;
-  opacity: .6;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  box-shadow: 0 40px 100px -50px rgba(0, 0, 0, .6);
 }
 
 .lens__frame {
@@ -178,20 +161,22 @@ html:not(.js) .lens__bar, .lens.is-static .lens__bar { display: none; }
   font-family: var(--font-sans);
   color: var(--m-ink);
   background: var(--m-bg);
-  border: 1px solid var(--ink);
-  border-radius: 4px;
+  border: 1px solid rgba(10, 37, 64, .3);
+  border-radius: var(--radius-s);
   overflow: hidden;
   text-align: left;
   transform: translateZ(0);
 }
+.mock--human { min-height: var(--lens-mock-min, auto); } /* lens.js reserve(): tallest business */
+.lens.is-measuring * { transition: none !important; } /* lens.js reserve(), one synchronous task */
 .mock--machine {
   position: absolute;
   inset: 0;
-  color: var(--ink);
+  color: var(--midnight);
   background:
-    linear-gradient(var(--rule) 1px, transparent 1px) 0 0 / 100% 1.2em,
-    linear-gradient(90deg, var(--rule) 1px, transparent 1px) 0 0 / 1.2em 100%,
-    var(--wash-machine);
+    linear-gradient(rgba(10, 37, 64, .08) 1px, transparent 1px) 0 0 / 100% 1.2em,
+    linear-gradient(90deg, rgba(10, 37, 64, .08) 1px, transparent 1px) 0 0 / 1.2em 100%,
+    linear-gradient(135deg, rgba(59, 130, 246, .12), rgba(59, 130, 246, .06)) var(--white);
   clip-path: inset(0 0 0 50%);
   will-change: clip-path;
 }
@@ -202,14 +187,14 @@ html:not(.js) .lens__bar, .lens.is-static .lens__bar { display: none; }
   gap: 1em;
   height: 2.4em;
   padding: 0 1em;
-  border-bottom: 1px solid rgba(35, 53, 70, .16);
-  background: rgba(35, 53, 70, .035);
+  border-bottom: 1px solid rgba(10, 37, 64, .16);
+  background: rgba(10, 37, 64, .035);
 }
 .mock__dots { display: flex; gap: .35em; }
 .mock__dots i {
   width: .6em; height: .6em;
   border-radius: 50%;
-  border: 1px solid rgba(35, 53, 70, .4);
+  border: 1px solid rgba(10, 37, 64, .4);
 }
 .mock__url {
   flex: 1;
@@ -218,13 +203,13 @@ html:not(.js) .lens__bar, .lens.is-static .lens__bar { display: none; }
   height: 1.5em;
   padding: 0 1em;
   border-radius: 1em;
-  background: rgba(35, 53, 70, .06);
+  background: rgba(10, 37, 64, .06);
   font-family: var(--font-mono);
   font-size: .72em;
   white-space: nowrap;
   overflow: hidden;
 }
-.mock--machine .mock__url { background: var(--ink); color: var(--paper); gap: .4em; }
+.mock--machine .mock__url { background: var(--midnight); color: var(--white); gap: .4em; }
 
 .mock__page { padding: 1.4em 1.8em 1.5em; }
 
@@ -293,7 +278,7 @@ html:not(.js) .lens__bar, .lens.is-static .lens__bar { display: none; }
 /* saas: a tiny dashboard */
 [data-biz="saas"] .mock__visual i:nth-child(1) { left: 1.2em; right: 1.2em; top: 1.2em; height: 2em; border-radius: .25em; background: #FFFFFF; }
 [data-biz="saas"] .mock__visual i:nth-child(2) { left: 1.2em; bottom: 1.2em; width: 1.6em; height: 4em; background: var(--m-accent); box-shadow: 2.4em -1.8em 0 var(--m-accent), 4.8em -.6em 0 var(--m-accent), 7.2em -3em 0 var(--m-accent); }
-[data-biz="saas"] .mock__visual i:nth-child(3) { right: 1.2em; bottom: 1.2em; width: 4.2em; height: 4.2em; border-radius: 50%; background: conic-gradient(var(--m-accent) 0 68%, var(--lavender) 0); }
+[data-biz="saas"] .mock__visual i:nth-child(3) { right: 1.2em; bottom: 1.2em; width: 4.2em; height: 4.2em; border-radius: 50%; background: conic-gradient(var(--m-accent) 0 68%, var(--mock-chart-rest) 0); }
 [data-biz="saas"] .mock__visual i:nth-child(4) { right: 2.3em; bottom: 2.3em; width: 2em; height: 2em; border-radius: 50%; background: var(--m-tint); }
 
 .mock__side {
@@ -308,7 +293,7 @@ html:not(.js) .lens__bar, .lens.is-static .lens__bar { display: none; }
   flex-direction: column;
   gap: .15em;
   padding: .65em .85em .7em;
-  border: 1px solid rgba(35, 53, 70, .18);
+  border: 1px solid rgba(10, 37, 64, .18);
   border-radius: .35em;
 }
 .mock__fact-label {
@@ -356,9 +341,9 @@ html:not(.js) .lens__bar, .lens.is-static .lens__bar { display: none; }
   height: 4.2em;
   margin-top: 1.4em;
   padding-top: .9em;
-  border-top: 1px solid rgba(35, 53, 70, .12);
+  border-top: 1px solid rgba(10, 37, 64, .12);
 }
-.mock__foot i { display: block; height: .5em; border-radius: 1em; background: rgba(35, 53, 70, .1); }
+.mock__foot i { display: block; height: .5em; border-radius: 1em; background: rgba(10, 37, 64, .1); }
 .mock__foot i:nth-child(2) { width: 82%; }
 .mock__foot i:nth-child(3) { width: 56%; }
 
@@ -368,11 +353,11 @@ html:not(.js) .lens__bar, .lens.is-static .lens__bar { display: none; }
 .mock--machine .mock__visual i,
 .mock--machine .mock__foot i { display: none; }
 
-/* entities: ink box + ink label chip */
+/* entities: Midnight box + Midnight label chip */
 .ent {
   position: relative;
-  background: rgba(205, 198, 253, .9);
-  outline: 1px solid var(--ink);
+  background: rgba(59, 130, 246, .18);
+  outline: 1px solid var(--midnight);
   outline-offset: .18em;
   border-radius: 1px;
   box-decoration-break: clone;
@@ -384,8 +369,8 @@ html:not(.js) .lens__bar, .lens.is-static .lens__bar { display: none; }
   left: -.2em;
   bottom: calc(100% + .22em);
   padding: .2em .45em .15em;
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--midnight);
+  color: var(--white);
   font-family: var(--font-mono);
   font-size: clamp(7px, .62em, 10px);
   font-style: normal;
@@ -397,35 +382,34 @@ html:not(.js) .lens__bar, .lens.is-static .lens__bar { display: none; }
 }
 .mock__brand .ent::before { font-size: clamp(7px, .46em, 10px); }
 .mock__kicker .ent::before { font-size: clamp(7px, .84em, 10px); }
-.mock__fact.ent { background: rgba(205, 198, 253, .9); border-color: transparent; outline-offset: 0; }
+.mock__fact.ent { background: rgba(59, 130, 246, .18); border-color: transparent; outline-offset: 0; }
 .mock__fact.ent::before { left: 0; bottom: auto; top: 0; transform: translateY(-100%); font-size: clamp(7px, .62em, 10px); }
 .mock__rating .ent::before { font-size: clamp(7px, .78em, 10px); }
 
 /* tokens: alternating chips so token boundaries show */
 .tok {
-  background: rgba(205, 198, 253, .95);
-  box-shadow: inset 0 0 0 1px rgba(35, 53, 70, .35);
+  background: rgba(59, 130, 246, .18);
+  box-shadow: inset 0 0 0 1px rgba(10, 37, 64, .35);
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
 }
-.tok:nth-child(even) { background: rgba(227, 209, 254, 1); }
+.tok:nth-child(even) { background: rgba(59, 130, 246, .10); }
 
-.mock--machine .mock__links span { outline: 1px dashed rgba(35, 53, 70, .45); outline-offset: .15em; }
+.mock--machine .mock__links span { outline: 1px dashed rgba(10, 37, 64, .45); outline-offset: .15em; }
 
 /* flags: things the machine cannot use */
 .mock--machine .mock__visual {
   display: grid;
   place-items: center;
-  background: repeating-linear-gradient(135deg, rgba(35, 53, 70, .1) 0 1px, transparent 1px 8px);
-  outline: 1px dashed var(--ink);
+  background: repeating-linear-gradient(135deg, rgba(10, 37, 64, .1) 0 1px, transparent 1px 8px);
+  outline: 1px dashed var(--midnight);
   outline-offset: -1px;
 }
 .flag,
 .mock__cta--flag::after {
   padding: .3em .55em .25em;
-  background: var(--signal);
-  color: var(--ink);
-  box-shadow: 0 0 0 1px var(--ink);
+  background: var(--blue-600);
+  color: var(--white);
   font-family: var(--font-mono);
   font-size: clamp(7px, .66em, 10.5px);
   font-weight: 500;
@@ -438,8 +422,8 @@ html:not(.js) .lens__bar, .lens.is-static .lens__bar { display: none; }
 .mock__cta--flag {
   position: relative;
   background: transparent;
-  color: var(--ink);
-  outline: 1px dashed var(--ink);
+  color: var(--midnight);
+  outline: 1px dashed var(--midnight);
   outline-offset: -1px;
   text-decoration: line-through;
   text-decoration-thickness: 1px;
@@ -477,14 +461,14 @@ html:not(.js) .lens__bar, .lens.is-static .lens__bar { display: none; }
   display: block;
   width: 8em;
   height: .8em;
-  border: 1px solid var(--ink);
+  border: 1px solid var(--midnight);
   padding: 1px;
 }
 .meter__fill {
   display: block;
   height: 100%;
   width: calc(var(--v, .5) * 100%);
-  background: var(--ink);
+  background: var(--midnight);
   transition: width var(--dur-slow) var(--ease-scan);
 }
 
@@ -509,7 +493,7 @@ html:not(.js) .lens__bar, .lens.is-static .lens__bar { display: none; }
   display: flex;
   justify-content: center;
   gap: 0;
-  background: linear-gradient(var(--ink), var(--ink)) 50% 0 / 1px 100% no-repeat;
+  background: linear-gradient(var(--midnight), var(--midnight)) 50% 0 / 1px 100% no-repeat;
 }
 .lens__split::before {
   content: "";
@@ -517,16 +501,16 @@ html:not(.js) .lens__bar, .lens.is-static .lens__bar { display: none; }
   top: 0; bottom: 0; left: 50%;
   width: 3px;
   transform: translateX(-50%);
-  background: var(--signal);
-  box-shadow: 0 0 0 1px var(--ink);
+  background: var(--blue);
+  box-shadow: 0 0 0 1px var(--midnight);
 }
 .lens__split span {
   position: relative;
   align-self: flex-end;
   margin: 0 .5rem .6rem;
   padding: .25em .55em .2em;
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--midnight);
+  color: var(--white);
   font-family: var(--font-mono);
   font-size: var(--fs-mono-s);
   font-weight: 500;
@@ -541,8 +525,8 @@ html:not(.js) .lens__bar, .lens.is-static .lens__bar { display: none; }
   width: calc(var(--r) * 2);
   height: calc(var(--r) * 2);
   border-radius: 50%;
-  border: 3px solid var(--signal);
-  box-shadow: 0 0 0 1px var(--ink), inset 0 0 0 1px var(--ink);
+  border: 3px solid var(--blue);
+  box-shadow: 0 0 0 1px var(--midnight), inset 0 0 0 1px var(--midnight);
   will-change: transform;
 }
 /* registration ticks around the ring */
@@ -551,10 +535,10 @@ html:not(.js) .lens__bar, .lens.is-static .lens__bar { display: none; }
   position: absolute;
   inset: -12px;
   background:
-    linear-gradient(var(--ink), var(--ink)) 50% 0 / 1px 9px,
-    linear-gradient(var(--ink), var(--ink)) 50% 100% / 1px 9px,
-    linear-gradient(var(--ink), var(--ink)) 0 50% / 9px 1px,
-    linear-gradient(var(--ink), var(--ink)) 100% 50% / 9px 1px;
+    linear-gradient(var(--midnight), var(--midnight)) 50% 0 / 1px 9px,
+    linear-gradient(var(--midnight), var(--midnight)) 50% 100% / 1px 9px,
+    linear-gradient(var(--midnight), var(--midnight)) 0 50% / 9px 1px,
+    linear-gradient(var(--midnight), var(--midnight)) 100% 50% / 9px 1px;
   background-repeat: no-repeat;
 }
 .lens[data-mode="lens"] .lens__ring { opacity: 1; }
@@ -562,8 +546,8 @@ html:not(.js) .lens__bar, .lens.is-static .lens__bar { display: none; }
 .lens__readout {
   left: 0; top: 0;
   padding: .3em .6em .25em;
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--midnight);
+  color: var(--white);
   font-size: min(var(--fs-mono-s), 3.7cqi); /* the longest readout fits a 250px frame */
   white-space: nowrap;
   text-transform: none;
@@ -577,8 +561,8 @@ html:not(.js) .lens__bar, .lens.is-static .lens__bar { display: none; }
   left: 0; right: 0;   /* of .lens__clip, 6px wider than the frame on each side */
   top: 0;
   height: var(--bh);
-  border-block: 3px solid var(--signal);
-  box-shadow: 0 0 0 1px var(--ink), inset 0 0 0 1px var(--ink);
+  border-block: 3px solid var(--blue);
+  box-shadow: 0 0 0 1px var(--midnight), inset 0 0 0 1px var(--midnight);
   will-change: transform;
 }
 .lens[data-mode="scan"] .lens__band { opacity: 1; }
@@ -594,13 +578,13 @@ html:not(.js) .lens__bar, .lens.is-static .lens__bar { display: none; }
     min-width: 44px; min-height: 44px;
     transform: translateY(-50%);
     padding: 0 .5rem;
-    background: var(--ink);
-    color: var(--paper);
+    background: var(--midnight);
+    color: var(--white);
     font-family: var(--font-mono);
     font-size: var(--fs-mono-s);
     letter-spacing: var(--track-mono);
     text-transform: uppercase;
-    border-radius: var(--radius);
+    border-radius: var(--radius-pill);
   }
   .lens__grip::before { content: "↕ "; }
 }
@@ -616,8 +600,8 @@ html:not(.js) .lens__bar, .lens.is-static .lens__bar { display: none; }
   inset: 0;
   z-index: 3;
   pointer-events: none;
-  background: var(--paper);
-  box-shadow: inset -3px 0 0 var(--signal), inset -4px 0 0 var(--ink);
+  background: var(--white);
+  box-shadow: inset -3px 0 0 var(--blue), inset -4px 0 0 var(--midnight);
   clip-path: inset(0 100% 0 0);
 }
 .lens.is-switching .lens__frame::after { animation: wipe var(--dur-slow) var(--ease-scan); }
@@ -625,47 +609,55 @@ html:not(.js) .lens__bar, .lens.is-static .lens__bar { display: none; }
   0%   { clip-path: inset(0 100% 0 0); }
   45%  { clip-path: inset(0 0 0 0); }
   55%  { clip-path: inset(0 0 0 0); }
-  100% { clip-path: inset(0 0 0 100%); box-shadow: inset 3px 0 0 var(--signal), inset 4px 0 0 var(--ink); }
+  100% { clip-path: inset(0 0 0 100%); box-shadow: inset 3px 0 0 var(--blue), inset 4px 0 0 var(--midnight); }
 }
 
 /* ---------- caption ---------- */
 .lens__caption {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   gap: var(--space-s);
-  margin-top: var(--space-xs);
-  color: var(--ink-soft);
+  margin-top: var(--space-s);
+  color: var(--fg-soft);
 }
 .lens__legend { font-size: var(--fs-mono-s); text-transform: none; letter-spacing: .02em; }
 
 /* ==========================================================================
    AI answer card
    ========================================================================== */
+/* a Midnight panel with a hairline border and Mist text: labels --fg-soft (6.2:1),
+   the chip Mist on Blue at .12 over Midnight (11.4:1) */
 .answer {
   display: grid;
   gap: var(--space-xs);
-  margin-top: var(--space-s);
+  margin-top: var(--space-m);
   padding: var(--space-m) var(--space-m) var(--space-s);
-  background: var(--lilac);
-  border-left: 3px solid var(--ink);
-  border-radius: var(--radius);
-  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  color: var(--fg);
 }
 .answer p { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); gap: var(--space-s); align-items: baseline; }
-.answer__label { font-size: var(--fs-mono-s); font-weight: 500; }
+.answer__label { font-size: var(--fs-mono-s); font-weight: 500; color: var(--fg-soft); }
 .answer__q span:last-child {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: 1.375rem;
-  line-height: 1.2;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 1.25rem;
+  line-height: 1.25;
+  letter-spacing: -.015em;
+  min-height: var(--lens-q-min, auto); /* lens.js reserve(): tallest question across businesses */
 }
-.answer__a span:last-child { font-size: var(--fs-small); line-height: 1.5; min-height: 3em; }
+/* the answer and the "reading…" cue share one cell, so the cue overlays the clipped
+   text instead of pushing it into the label column (no reflow pending → answered) */
+.answer__a > span:last-child { grid-area: 1 / 2; font-size: var(--fs-small); line-height: 1.5; min-height: max(3em, var(--lens-a-min, 0px)); }
 .answer__source { justify-items: start; }
+/* the chip sits under the answer text, not in the 6.5rem label column (one line) */
+.answer__source .chip { grid-column: 2; overflow-wrap: anywhere; min-height: var(--lens-s-min, 0px); } /* lens.js reserve() */
 .chip {
   display: inline-block;
   padding: .3em .6em .25em;
-  background: var(--lavender);
-  border-radius: var(--radius);
+  background: rgba(59, 130, 246, .12);
+  border-radius: var(--radius-pill);
   text-transform: none;
   letter-spacing: .02em;
   font-size: var(--fs-mono-s);
@@ -677,6 +669,7 @@ html:not(.js) .lens__bar, .lens.is-static .lens__bar { display: none; }
 .lens[data-answer="pending"] .answer__a::after {
   content: "reading…";
   grid-area: 1 / 2;
+  align-self: start;
   font-family: var(--font-mono);
   font-size: var(--fs-mono-s);
   letter-spacing: var(--track-mono);
@@ -687,7 +680,9 @@ html:not(.js) .lens__bar, .lens.is-static .lens__bar { display: none; }
 @media (max-width: 29.99em) {
   .answer { padding-inline: var(--space-s); }
   .answer p { grid-template-columns: minmax(0, 1fr); gap: .2rem; }
+  .answer__a > span:last-child,
   .lens[data-answer="pending"] .answer__a::after { grid-area: 2 / 1; }
+  .answer__source .chip { grid-column: 1; }
 }
 
 /* ---------- before lens.js boots: human only, answer pending ----------

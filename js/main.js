@@ -4,13 +4,16 @@ import { initReveal, revealAll } from './reveal.js';
 import { initNav } from './nav.js';
 import { initYear } from './year.js';
 import { initContact } from './contact.js';
+import { initHeroMedia } from './hero-media.js';
 
 const html = document.documentElement;
 const mq = matchMedia('(prefers-reduced-motion: reduce)');
 const lens = document.querySelector('.lens');
+const heroMedia = document.querySelector('.hero__media');
 const run = (init, fallback) => { try { init(); } catch (e) { fallback(); console.error(e); } };
 
 html.classList.add('js', 'js-ready');
+if (heroMedia) run(() => initHeroMedia(heroMedia, mq), () => heroMedia.classList.add('is-static'));
 if (lens) run(() => initLens(lens, mq), () => lens.classList.add('is-static'));
 run(() => initReveal(mq), revealAll);
 run(initNav, () => html.classList.add('nav-off'));

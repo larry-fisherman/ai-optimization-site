@@ -2,90 +2,121 @@
    Legible — design tokens
    Palette, type, spacing, motion. The brand colours are defined only here;
    other files use them as tokens or as rgba() alphas of the same values.
-   Exceptions: white (the machine-layer ground below, print) and the
-   fictional client sites inside the hero mock, whose themes, shapes, star
-   and button colours live in hero.css.
-   Contrast (WCAG 2.x, verified):
-     ink on paper 11.6 · ink-soft on paper 5.4 · signal-ink on paper 5.7
-     ink on lavender 7.8 · ink on lilac 8.9 · signal on ink 6.3 · paper on ink 11.6
-   Rules: lavender / lilac / signal are FILLS ONLY on paper — never text or
-   meaningful lines. ink-soft is paper-only (fails AA on lavender and lilac).
+   Exceptions: the fictional client sites inside the Lens mock, whose themes,
+   shapes, star and button colours live in hero.css (the saas chart's
+   remainder is --mock-chart-rest below, kept here as a named token).
+   Brand: Midnight #0A2540 · Blue #3B82F6 · Mist #E5E7EB · Charcoal #1F2937.
+   Derived page surface: night #071A2E (Midnight darkened toward near-black);
+   Midnight is the raised surface (inputs, panels, the Lens stage).
+   Accessible tints of Blue (derived, for text):
+     blue-600 #2563EB · blue-700 #1D4ED8 · blue-400 #60A5FA · slate #4B5563.
+   One dark theme on every page. Contrast (WCAG 2.x, measured):
+     mist on night 14.2 · mist on midnight 12.5
+     fg-soft (mist at .66) on night 6.7 · on midnight 6.2
+       · on the bloom's brightest point (blue at .22 over night, #12315A) 5.5
+     blue-400 on night 6.9 · on midnight 6.1 · on bloom peak 5.1
+     night on mist (pressed controls) 14.2 · white on midnight 15.5
+     field borders: mist at .45 over the night field, 3.8 against the field
+       and 3.4 against the Midnight form panel (non-text, WCAG 1.4.11 ≥ 3)
+     raw blue: on night 4.8 · on midnight 4.2 · on bloom peak 3.5
+     hero over video (home; scrim of night/midnight alphas in main.css): worst
+       case at the brightest pixel under each text box, over both renditions,
+       every 0.25 s plus every 0.1 s over the last 1.6 s and the frame before the
+       loop point, at 375, 768 and 1440 (tools/browser/hero-contrast.mjs):
+       (Pexels 6981292, mirrored and filtered as in main.css):
+       h1 mist 6.8 · h1 em fg-soft 4.3 (large text, ≥ 3) · sub fg-soft 4.9
+       · CTA mist 10.8 · cue fg-soft 6.1 · badge mist 6.7
+       · Pause/Play fg-soft on its night .6 backing 5.8
+     over the ocean band (site header and inner-page heroes), worst pixel under
+       each text box on 8 pages at 375, 768 and 1440: wordmark 13.6 · nav links
+       7.6 · "Get started" and Menu on their night .6 backing 6.1
+       · page-hero title 8.9 · title em 4.9 (large) · lede 5.4
+     print / light contexts: charcoal on white 14.7 · slate on white 7.6
+       · blue-700 on white 6.7 · midnight on white 15.5
+   Rules: raw Blue (#3B82F6) is for fills, graphics, the logo, the bloom and
+   small dots only — never text. Blue text, where any remains, is blue-400 on
+   night or Midnight. Hairlines (--line, --line-strong, --grid-line) are
+   decorative separators, not control boundaries.
    ========================================================================== */
 
 @font-face {
-  font-family: "Instrument Serif";
-  src: url("../fonts/InstrumentSerif-Regular.woff2") format("woff2");
-  font-weight: 400;
+  font-family: "Geist";
+  src: url("../fonts/Geist-Variable.woff2") format("woff2-variations"),
+       url("../fonts/Geist-Variable.woff2") format("woff2");
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: "Instrument Serif";
-  src: url("../fonts/InstrumentSerif-Italic.woff2") format("woff2");
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Instrument Sans";
-  src: url("../fonts/InstrumentSans-Variable.woff2") format("woff2-variations"),
-       url("../fonts/InstrumentSans-Variable.woff2") format("woff2");
-  font-weight: 400 700;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "JetBrains Mono";
-  src: url("../fonts/JetBrainsMono-Regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "JetBrains Mono";
-  src: url("../fonts/JetBrainsMono-Medium.woff2") format("woff2");
-  font-weight: 500;
+  font-family: "Geist Mono";
+  src: url("../fonts/GeistMono-Variable.woff2") format("woff2-variations"),
+       url("../fonts/GeistMono-Variable.woff2") format("woff2");
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
 
 :root {
   /* --- palette (brand) --- */
-  --paper: #F3F6FE;
-  --ink: #233546;
-  --ink-soft: #56677A;
-  --lavender: #CDC6FD;
-  --lilac: #E3D1FE;
-  --signal: #D9B07B;
-  --signal-ink: #7F5A1C;
-  --rule: rgba(35, 53, 70, .14);
-  --rule-strong: rgba(35, 53, 70, .32);
-  --paper-rule: rgba(243, 246, 254, .18);
-  --wash: linear-gradient(135deg, rgba(205, 198, 253, .55), rgba(227, 209, 254, .35));
-  /* machine-layer ground: lavender → lilac at 50% on white (≈ #E7E3FE → #F1E8FE) */
-  --wash-machine: linear-gradient(135deg, rgba(205, 198, 253, .5), rgba(227, 209, 254, .5)) #FFF;
+  --midnight: #0A2540;
+  --blue: #3B82F6;
+  --mist: #E5E7EB;
+  --charcoal: #1F2937;
+  --white: #FFFFFF;
+
+  /* --- derived surface (see the header) --- */
+  --night: #071A2E;
+
+  /* --- accessible tints (derived; see the header) --- */
+  --blue-400: #60A5FA;
+  --blue-600: #2563EB;
+  --blue-700: #1D4ED8;
+  --slate: #4B5563;
+
+  /* --- fictional mock (not Legible's brand): the saas client's chart remainder --- */
+  --mock-chart-rest: #CDC6FD;
+
+  /* --- semantic tokens: one dark theme everywhere (print re-declares them light) --- */
+  --bg: var(--night);
+  --surface: var(--midnight);
+  --fg: var(--mist);
+  --fg-soft: rgba(229, 231, 235, .66);  /* 6.7:1 on night, 5.5:1 on the bloom peak */
+  --line: rgba(229, 231, 235, .10);
+  --line-strong: rgba(229, 231, 235, .22);
+  --grid-line: rgba(229, 231, 235, .05);
+  --field-line: rgba(229, 231, 235, .45); /* ≥ 3:1 against the field and the panel (measured 3.8 / 3.4) */
+  --accent-text: var(--blue-400);
+  --focus: var(--blue-400);
+
+  /* --- gradients --- */
+  --bloom: radial-gradient(closest-side, rgba(59, 130, 246, .22), rgba(59, 130, 246, .08) 55%, rgba(59, 130, 246, 0));
 
   /* --- type families --- */
-  --font-serif: "Instrument Serif", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
-  --font-sans: "Instrument Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif; /* system only: the fictional coffee mock */
+  --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
   /* --- fluid type scale --- */
-  --fs-display: clamp(2.75rem, 8vw, 7.5rem);
-  --fs-h2: clamp(2.25rem, 5.2vw, 4.75rem);
-  --fs-h3: clamp(1.75rem, 3.4vw, 2.75rem);
+  --fs-hero: clamp(2.5rem, 7.4vw, 7.5rem);    /* 40px at 375 so "understands&nbsp;you." fits; 107px at 1440 */
+  --fs-display: clamp(3rem, 7vw, 6.5rem);
+  --fs-h2: clamp(2.5rem, 5.5vw, 4.75rem);
+  --fs-h3: clamp(1.5rem, 2.2vw, 2rem);
+  --fs-num: clamp(3rem, 2rem + 3vw, 4.5rem);   /* big light numerals "01" */
   --fs-lede: clamp(1.1875rem, 1.05rem + .55vw, 1.4375rem);
-  --fs-body: clamp(1.0625rem, 1rem + .2vw, 1.1875rem);  /* 17 → 19px */
+  --fs-body: 1.125rem;                          /* 18px */
   --fs-small: .9375rem;
-  --fs-mono: .75rem;                                    /* 12px */
-  --fs-mono-s: .6875rem;                                /* 11px */
-  --fs-mono-l: .8125rem;                                /* 13px */
+  --fs-mono: .75rem;                            /* 12px */
+  --fs-mono-s: .6875rem;                        /* 11px */
+  --fs-mono-l: .8125rem;                        /* 13px */
 
   --lh-display: .95;
-  --lh-heading: 1.02;
-  --lh-body: 1.55;
-  --track-display: -.02em;
-  --track-mono: .06em;
+  --lh-heading: 1.04;
+  --lh-body: 1.6;
+  --track-display: -.045em;
+  --track-heading: -.035em;
+  --track-mono: .12em;
+  --fw-heading: 400;
+  --fw-light: 300;
   --measure: 64ch;
 
   /* --- spacing --- */
@@ -96,7 +127,7 @@
   --space-m: 1.5rem;
   --space-l: 2.25rem;
   --space-xl: clamp(3rem, 2rem + 4vw, 5rem);
-  --space-2xl: clamp(4.5rem, 3rem + 7vw, 9rem);
+  --space-2xl: clamp(6rem, 4rem + 8vw, 12rem);
   --gutter: clamp(1.25rem, .75rem + 2.5vw, 3rem);
   --max: 90rem;
   --col-gap: clamp(1rem, .5rem + 1.6vw, 2rem);
@@ -109,6 +140,9 @@
   --dur-slow: 700ms;
   --dur-scan: 6s;
 
-  --radius: 2px;
+  --radius-s: 6px;
+  --radius: 14px;
+  --radius-l: 22px;        /* the one large panel radius */
+  --radius-pill: 999px;
   --nav-h: 4rem;
 }

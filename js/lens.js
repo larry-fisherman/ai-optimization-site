@@ -9,14 +9,21 @@ export function initLens(root, mq) {
   const frame = $('.lens__frame'), band = $('.lens__band'), ring = $('.lens__ring'), pause = $('.lens__pause');
   const readout = $('[data-readout]'), live = $('[data-lens-live]');
   const machineLayer = $('.mock--machine'), tabs = $$('.lens__tab'), views = $$('.lens__view');
+  const qEl = $('.answer [data-slot="question"]'), aEl = $('.answer [data-slot="answer"]'), human = $('.mock--human');
+  const chip = $('.answer__source .chip');
   // observers first: a missing API throws before any change
   const io = new IntersectionObserver(([en]) => { visible = en.isIntersecting; schedule(); });
-  const ro = new ResizeObserver(() => { measure(); if (base === 'lens') { x = tx = clamp(x, 0, W); y = ty = clamp(y, 0, H); } vars(); });
+  // reserve() changes the frame's height, so it never runs inside this callback: only a
+  // width change asks for it, on the next frame (no "ResizeObserver loop" error)
+  const ro = new ResizeObserver(([en]) => {
+    if (en.contentRect.width !== reservedW) requestReserve();
+    measure(); if (base === 'lens') { x = tx = clamp(x, 0, W); y = ty = clamp(y, 0, H); } vars();
+  });
 
   let reduced = mq.matches, base = reduced ? 'split' : 'scan', machine = false, paused = false;
   let cur = 0, scanned = reduced, auto = !reduced, switching = 0;
   let W = 0, H = 0, r = 0, bh = 0, x = 0, y = 0, tx = 0, ty = 0, by = 0, rw = 0, rh = 0;
-  let raf = 0, last = 0, visible = true, dragging = false, holdUntil = 0;
+  let raf = 0, last = 0, visible = true, dragging = false, holdUntil = 0, reserveT = 0, reservedW = -1, reservedFonts = '';
   let leaveT = 0, autoT = 0, answerT = 0, wipeT = 0, morphT = 0, toks = [], lastText = '';
 
   // per frame: direct clip-path/transform writes; readout flips to stay in frame
@@ -57,6 +64,43 @@ export function initLens(root, mq) {
     }
     const text = `${machine ? 'parsed' : 'reading…'} ${n} tokens · ${e} entities${machine ? ' · 2 flags' : ''}`;
     if (text !== lastText) readout.textContent = lastText = text;
+  }
+
+  // reserve the tallest mock page, question, answer and source chip across BIZ, so the
+  // frame and the answer card keep one height through switches (one synchronous task:
+  // nothing paints mid-measure). Restores what is on screen, not BIZ[cur]: render() lags
+  // cur by 320ms. .is-measuring turns transitions off while measuring (the global
+  // reduced-motion rule gives every property a .01ms transition, which would leave the
+  // theme sizes stale), so it waits until no transition is running in the Lens, rather
+  // than snap one (the answer's wipe-in, the view pill, the morph) to its end.
+  const VARS = ['--lens-q-min', '--lens-a-min', '--lens-s-min', '--lens-mock-min'];
+  // when the browser is idle (it costs a few forced layouts; the Lens sits below the fold),
+  // or within 500ms; a rAF where requestIdleCallback is missing
+  function requestReserve() {
+    if (reserveT) return;
+    const run = () => { reserveT = 0; reserve(); measure(); vars(); };
+    reserveT = window.requestIdleCallback ? requestIdleCallback(run, { timeout: 500 }) : requestAnimationFrame(run);
+  }
+  function reserve() {
+    const busy = root.getAnimations?.({ subtree: true }).filter(a => a.transitionProperty && a.playState === 'running') || [];
+    if (busy.length) { Promise.allSettled(busy.map(a => a.finished)).then(requestReserve); return; }
+    const shown = BIZ.find(b => b.key === frame.dataset.biz) || BIZ[cur], q0 = qEl.textContent, a0 = aEl.textContent;
+    const els = [qEl, aEl, chip, human], max = [0, 0, 0, 0];
+    root.classList.add('is-measuring');
+    try {
+      for (const k of VARS) root.style.removeProperty(k);
+      for (const b of BIZ) {
+        render(b);
+        els.forEach((el, i) => { max[i] = Math.max(max[i], el.getBoundingClientRect().height); });
+      }
+    } finally {
+      render(shown);
+      qEl.textContent = q0; aEl.textContent = a0;
+      void human.offsetHeight;
+      root.classList.remove('is-measuring');
+    }
+    VARS.forEach((k, i) => root.style.setProperty(k, max[i] + 'px'));
+    reservedW = frame.getBoundingClientRect().width; reservedFonts = document.fonts?.status;
   }
 
   // --- loop: only while something moves on screen
@@ -194,8 +238,10 @@ export function initLens(root, mq) {
   io.observe(root);
   ro.observe(frame);
   document.addEventListener('visibilitychange', schedule);
-  document.fonts?.ready.then(measure);
+  // once the web fonts are in, unless the last reserve already had them
+  document.fonts?.ready.then(() => { if (reservedFonts !== 'loaded') requestReserve(); });
 
+  requestReserve();
   measure();
   x = tx = W / 2; y = ty = H * 0.4; by = -bh;
   vars(); paint(); press();

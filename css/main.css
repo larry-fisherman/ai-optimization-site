@@ -176,28 +176,6 @@ main:focus-visible, .lens:focus-visible { outline-offset: 6px; }
 .button--sm { min-height: 2.5rem; padding: .4rem 1.1rem; font-size: var(--fs-small); }
 .button--sm::after { content: none; }
 
-/* ---------- badge: a tiny hairline pill with a Blue dot ---------- */
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: .6em;
-  padding: .35rem .85rem .35rem .75rem;
-  border: 1px solid var(--line-strong);
-  border-radius: var(--radius-pill);
-  background: rgba(229, 231, 235, .04);
-  color: var(--fg);
-  font-size: var(--fs-small);
-  line-height: 1.3;
-  white-space: nowrap;
-}
-.badge::before {
-  content: "";
-  flex: none;
-  width: .45rem; height: .45rem;
-  border-radius: 50%;
-  background: var(--blue);
-}
-
 /* ---------- wordmark: the L mark + Geist ---------- */
 .wordmark {
   display: inline-flex;
@@ -217,6 +195,20 @@ main:focus-visible, .lens:focus-visible { outline-offset: 6px; }
 .wordmark__mark stop:nth-child(1) { stop-color: var(--blue-400); }
 .wordmark__mark stop:nth-child(2) { stop-color: var(--blue); }
 .wordmark__mark stop:nth-child(3) { stop-color: var(--blue-600); }
+/* "Technologies": the quieter descriptor after a hairline, in the mono voice */
+.wordmark__sub {
+  align-self: stretch;
+  display: inline-flex;
+  align-items: center;
+  padding-left: .75em;
+  border-left: 1px solid var(--line-strong);
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-s);
+  font-weight: 400;
+  letter-spacing: var(--track-mono);
+  text-transform: uppercase;
+  color: var(--fg-soft);
+}
 
 /* ---------- the bloom: one soft Blue radial, top-right of a page hero ----------
    Decorative and static. Clipped sideways only (clip, not hidden: hidden would
@@ -268,6 +260,11 @@ main:focus-visible, .lens:focus-visible { outline-offset: 6px; }
   min-height: var(--nav-h);
 }
 .site-header .wordmark { order: 1; margin-right: auto; flex: none; }
+/* below 60em the header row has no room for "Technologies" */
+.site-header .wordmark__sub { display: none; }
+@media (min-width: 60em) {
+  .site-header .wordmark__sub { display: inline-flex; }
+}
 .site-nav { order: 2; }
 .site-header__cta { order: 3; white-space: nowrap; }
 /* the pill sits on the band's lightest (right) end: a night backing (the Menu toggle gets the same) */
@@ -317,7 +314,7 @@ main:focus-visible, .lens:focus-visible { outline-offset: 6px; }
     font-weight: 400;
     cursor: pointer;
   }
-  .js:not(.nav-off) .site-nav__toggle:hover { background: rgba(229, 231, 235, .1); }
+  .js:not(.nav-off) .site-nav__toggle:hover { background: rgba(7, 26, 46, .8); } /* darker, like the CTA */
   .js:not(.nav-off) .site-nav__toggle:focus-visible { border-radius: var(--radius-pill); }
   .js:not(.nav-off) .site-nav__toggle::before {
     content: "";
@@ -456,21 +453,23 @@ main:focus-visible, .lens:focus-visible { outline-offset: 6px; }
   object-fit: cover;
 }
 /* the clip is a bright teal shore: mirrored so the surf sits right, away from the
-   headline, and shifted toward the brand blues (same filter on poster and video,
-   so the fade-in doesn't jump) */
+   headline. The shift toward the brand blues is the scrim's Blue layer, not a CSS
+   filter (a filter on a full-bleed video cost ~800 ms of blocking time in Lighthouse) */
 .hero__poster,
 .hero__video { transform: scaleX(-1); }
 .hero__video { opacity: 0; transition: opacity var(--dur-slow) var(--ease-scan); }
 .hero__video.is-playing { opacity: 1; }
 .hero__media.is-static .hero__video { display: none; }
-/* scrim: night and midnight alphas only; darker behind the text, fully --bg at the foot */
+/* scrim: night and midnight alphas over a light Blue wash (which pulls the teal footage
+   toward the brand blues); darker behind the text, fully --bg at the foot */
 .hero__media::after {
   content: "";
   position: absolute;
   inset: 0;
   background:
     linear-gradient(180deg, rgba(7, 26, 46, .65) 0%, rgba(7, 26, 46, .7) 35%, rgba(7, 26, 46, .85) 65%, var(--bg) 85%, var(--bg) 100%),
-    rgba(10, 37, 64, .35);
+    linear-gradient(rgba(10, 37, 64, .35), rgba(10, 37, 64, .35)),
+    rgba(59, 130, 246, .14);
 }
 /* the faint grid lines, redrawn over the video: keep in sync with body::before */
 .hero__media::before {
@@ -530,7 +529,6 @@ main:focus-visible, .lens:focus-visible { outline-offset: 6px; }
   min-height: calc(100svh - var(--nav-h));
   padding-block: var(--space-l);
 }
-.hero__badge { align-self: flex-start; }
 .hero__title {
   font-size: var(--fs-hero);
   line-height: var(--lh-display);

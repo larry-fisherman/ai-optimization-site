@@ -63,6 +63,13 @@ class SharedChrome(unittest.TestCase):
                     b = normalise_404(b)
                 self.assertEqual(b, ref, f'{p} shared:{name} differs from index.html')
 
+    def test_wordmark_technologies(self):
+        index = read('index.html')
+        for name in ('header', 'footer'):
+            b = block(index, name)
+            self.assertIn('aria-label="Legible Technologies, home"', b, name)
+            self.assertIn('<span class="wordmark__text">Legible</span> <span class="wordmark__sub">Technologies</span>', b, name)
+
     def test_footer_year(self):
         self.assertIn('data-year', block(read('index.html'), 'footer'))
 

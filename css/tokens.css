@@ -19,18 +19,24 @@
      field borders: mist at .45 over the night field, 3.8 against the field
        and 3.4 against the Midnight form panel (non-text, WCAG 1.4.11 ≥ 3)
      raw blue: on night 4.8 · on midnight 4.2 · on bloom peak 3.5
-     hero over video (home; scrim of night/midnight alphas in main.css): worst
+     hero over video (home; scrim of night/midnight alphas over a Blue .14 wash, main.css): worst
        case at the brightest pixel under each text box, over both renditions,
        every 0.25 s plus every 0.1 s over the last 1.6 s and the frame before the
        loop point, at 375, 768 and 1440 (tools/browser/hero-contrast.mjs):
-       (Pexels 6981292, mirrored and filtered as in main.css):
-       h1 mist 6.8 · h1 em fg-soft 4.3 (large text, ≥ 3) · sub fg-soft 4.9
-       · CTA mist 10.8 · cue fg-soft 6.1 · badge mist 6.7
+       (Pexels 6981292, mirrored, unfiltered, under the Blue .14 scrim layer in main.css):
+       h1 mist 6.9 · h1 em fg-soft 4.3 (large text, ≥ 3) · sub fg-soft 4.9
+       · CTA mist 10.6 · cue fg-soft 5.9
        · Pause/Play fg-soft on its night .6 backing 5.8
-     over the ocean band (site header and inner-page heroes), worst pixel under
-       each text box on 8 pages at 375, 768 and 1440: wordmark 13.6 · nav links
-       7.6 · "Get started" and Menu on their night .6 backing 6.1
-       · page-hero title 8.9 · title em 4.9 (large) · lede 5.4
+     over the ocean band (site header on all 11 pages, inner-page heroes on the 10
+       that have one), worst pixel under each text box at 375, 768 and 1440
+       (tools/browser/band-contrast.mjs; pills measured inside their border):
+       wordmark 13.6 · nav links 7.6 · "Get started" and Menu on their night .6
+       backing 11.0, on the night .8 hover backing 12.6 · Technologies fg-soft 6.6
+       (from 960, where it first shows) · page-hero title 9.4 · title em 5.4 (large)
+       · lede 5.3
+     focus ring (--focus, 2px at a 3px offset) against the brightest band pixel
+       beside it, every header control at 375, 768 and 1440: worst 3.3 (Menu at
+       375, "Get started" at 768; non-text, ≥ 3)
      print / light contexts: charcoal on white 14.7 · slate on white 7.6
        · blue-700 on white 6.7 · midnight on white 15.5
    Rules: raw Blue (#3B82F6) is for fills, graphics, the logo, the bloom and

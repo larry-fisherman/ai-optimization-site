@@ -17,11 +17,11 @@ for (const [w, h] of [[375, 812], [768, 1024], [1440, 900]]) {
     return {
       'h1': [rects(h1.firstChild), col(h1), 3], 'h1 em': [rects(em), col(em), 3],
       'sub': [rects(q('.hero__sub')), col(q('.hero__sub')), 4.5], 'CTA': [rects(q('.hero .button')), col(q('.hero .button')), 4.5],
-      'cue': [rects(q('.hero__cue')), col(q('.hero__cue')), 4.5], 'badge': [rects(q('.hero__badge')), col(q('.hero__badge')), 4.5],
+      'cue': [rects(q('.hero__cue')), col(q('.hero__cue')), 4.5],
       'Pause/Play': [rects(q('.hero__media-toggle').firstChild), col(q('.hero__media-toggle')), 4.5],
     };
   });
-  await p.addStyleTag({ content: '.hero__inner, .hero__inner * { color: transparent !important; text-decoration-color: transparent !important; } .hero__badge::before { opacity: 0 !important; }' });
+  await p.addStyleTag({ content: '.hero__inner, .hero__inner * { color: transparent !important; text-decoration-color: transparent !important; }' });
   for (const file of ['assets/hero/ocean-540.mp4', 'assets/hero/ocean-720.mp4']) {
     // loaded as a blob, so every seek is local (a server without Range support can't seek)
     const dur = await p.evaluate(async f => { const v = document.querySelector('.hero__video'); v.pause();
@@ -29,9 +29,12 @@ for (const [w, h] of [[375, 812], [768, 1024], [1440, 900]]) {
       return new Promise(r => { v.addEventListener('loadeddata', () => r(v.duration), { once: true }); v.src = url; v.load(); }); }, file);
     const ts = new Set(); for (let t = 0; t < dur - 0.05; t += 0.25) ts.add(+t.toFixed(3));
     for (let t = Math.max(0, dur - 1.6); t < dur - 0.05; t += 0.1) ts.add(+t.toFixed(3));
-    ts.add(+(dur - 0.034).toFixed(3)); // the last frame before the loop point
-    // drop times under one frame (25–30 fps) after the previous one: they'd show the same frame
-    const times = [...ts].sort((x, y) => x - y).filter((t, i, a) => i === 0 || t - a[i - 1] >= 0.045);
+    // dedupe: keep a time only if it is at least one 30 fps frame (1/30 s) after the last KEPT
+    // time, so no two samples can land on the same frame of a ≥ 25 fps clip. The last frame
+    // before the loop point is always kept: any grid time within one frame of it is dropped instead.
+    const FRAME = 1 / 30, LOOP = +(dur - 0.034).toFixed(3), times = [];
+    for (const t of [...ts].sort((x, y) => x - y)) if (Math.abs(LOOP - t) >= FRAME && (!times.length || t - times.at(-1) >= FRAME)) times.push(t);
+    times.push(LOOP); // every kept grid time is ≤ LOOP − 1/30, so this stays sorted
     let prev = '';
     for (const t of times) {
       // wait until the seeked frame is actually presented before the screenshot

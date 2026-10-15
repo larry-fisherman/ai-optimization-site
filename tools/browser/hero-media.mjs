@@ -111,7 +111,7 @@ for (const [name, o] of [['Save-Data', { init: conn({ saveData: true, effectiveT
 for (const [w, h] of [[320, 568], [375, 667], [375, 812], [768, 1024], [1440, 900]]) {
   const p = await page(b, w, h, { touch: w < 1000 }); await playing(p);
   const hit = await p.evaluate(() => { const box = e => e.getBoundingClientRect(), t = box(document.querySelector('.hero__media-toggle'));
-    return ['.hero__badge', '.hero__title', '.hero__sub', '.hero .button', '.hero__cue'].filter(s => { const r = box(document.querySelector(s)); return r.left < t.right && r.right > t.left && r.top < t.bottom && r.bottom > t.top; }); });
+    return ['.hero__title', '.hero__sub', '.hero .button', '.hero__cue'].filter(s => { const r = box(document.querySelector(s)); return r.left < t.right && r.right > t.left && r.top < t.bottom && r.bottom > t.top; }); });
   check(`toggle overlaps nothing at ${w}x${h}`, hit.length === 0, hit.join(','));
   await p.close();
 }

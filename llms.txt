@@ -1,6 +1,6 @@
 # Legible
 
-> Legible is a studio that makes websites readable by AI assistants and answer engines, so businesses get found, understood and accurately cited by ChatGPT, Gemini, Perplexity and AI search.
+> Legible is a studio that makes websites readable by AI assistants and answer engines, so businesses get found, understood and represented accurately by ChatGPT, Gemini, Perplexity and AI search.
 
 Every website now has two readers: a person with a browser, and a language model that reads the page, decides what it believes and answers in a few sentences. Legible makes sure both come away with the same, correct picture. We work with businesses of any kind and size.
 
@@ -14,9 +14,9 @@ Every website now has two readers: a person with a browser, and a language model
 
 ## Packages
 
-- Free AI snapshot: a first look at how ChatGPT, Gemini and Perplexity describe a business today. Price: free. Timeline: PLACEHOLDER_TIMELINE_SNAPSHOT.
-- AI visibility audit: how a business shows up across AI assistants today, and who gets cited instead. Price: from PLACEHOLDER_PRICE_AUDIT. Timeline: PLACEHOLDER_TIMELINE_AUDIT.
-- Monitoring retainer: tracking how AI describes a business over time, and fixing drift at the source. Price: from PLACEHOLDER_PRICE_MONITORING. Term: PLACEHOLDER_TIMELINE_MONITORING.
+- Free AI snapshot: a first look at how ChatGPT, Gemini and Perplexity describe a business today. Price: free. Timeline: within a week.
+- AI visibility audit: how a business shows up across AI assistants today, and who gets cited instead. Pricing varies with scope and complexity; contact us for a quote. Timeline: scoped with your quote.
+- Monitoring retainer: tracking how AI describes a business over time, and fixing drift at the source. Pricing varies with scope and complexity; contact us for a quote. Term: scoped with your quote.
 
 ## Method
 
@@ -27,23 +27,22 @@ Every website now has two readers: a person with a browser, and a language model
 
 ## About
 
-- Founder: PLACEHOLDER_FOUNDER_NAME, PLACEHOLDER_FOUNDER_ROLE.
-- Area served: PLACEHOLDER_AREA_SERVED.
+- Area served: United States.
 
 ## Pages
 
-- [Packages and FAQ](https://example.com/packages.html)
-- [About](https://example.com/about.html)
-- [Contact](https://example.com/contact.html)
-- [AI Visibility Audit](https://example.com/ai-visibility-audit.html)
-- [Machine-Readable Foundations](https://example.com/machine-readable-foundations.html)
-- [Answer-Ready Content](https://example.com/answer-ready-content.html)
-- [Brand Signal Monitoring](https://example.com/brand-signal-monitoring.html)
-- [Internal AI Readiness](https://example.com/internal-ai-readiness.html)
-- [Privacy notice](https://example.com/privacy.html)
+- [Packages and FAQ](https://legibletechnologies.com/packages.html)
+- [About](https://legibletechnologies.com/about.html)
+- [Contact](https://legibletechnologies.com/contact.html)
+- [AI Visibility Audit](https://legibletechnologies.com/ai-visibility-audit.html)
+- [Machine-Readable Foundations](https://legibletechnologies.com/machine-readable-foundations.html)
+- [Answer-Ready Content](https://legibletechnologies.com/answer-ready-content.html)
+- [Brand Signal Monitoring](https://legibletechnologies.com/brand-signal-monitoring.html)
+- [Internal AI Readiness](https://legibletechnologies.com/internal-ai-readiness.html)
+- [Privacy notice](https://legibletechnologies.com/privacy.html)
 
 ## Contact
 
-- Contact form: https://example.com/contact.html
-- Email: PLACEHOLDER_CONTACT_EMAIL
-- Website: https://example.com/
+- Contact form: https://legibletechnologies.com/contact.html
+- Email: contact@legibletechnologies.com
+- Website: https://legibletechnologies.com/

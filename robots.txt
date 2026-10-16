@@ -14,5 +14,4 @@ User-agent: Applebot-Extended
 User-agent: CCBot
 Allow: /
 
-# PLACEHOLDER_SITE_URL
-Sitemap: https://example.com/sitemap.xml
+Sitemap: https://legibletechnologies.com/sitemap.xml

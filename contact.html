@@ -4,31 +4,27 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Contact — Legible</title>
-  <meta name="description" content="Find out how ChatGPT, Gemini and Perplexity describe your business today, and what it would take to be the one they recommend.">
-  <link rel="canonical" href="https://example.com/contact.html">
+  <meta name="description" content="Find out how ChatGPT, Gemini and Perplexity describe your business today, and where your site could be clearer to them.">
+  <link rel="canonical" href="https://legibletechnologies.com/contact.html">
   <meta name="theme-color" content="#071A2E">
   <link rel="icon" href="favicon.ico" sizes="32x32">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-  <!-- PLACEHOLDER_SITE_URL: every https://example.com on this page (canonical, Open Graph, JSON-LD). -->
-  <!-- PLACEHOLDER_LOGO: the JSON-LD "logo" URL below (stand-in: assets/favicon.svg). -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Legible">
-  <meta property="og:url" content="https://example.com/contact.html">
+  <meta property="og:url" content="https://legibletechnologies.com/contact.html">
   <meta property="og:title" content="Contact — Legible">
-  <meta property="og:description" content="Find out how ChatGPT, Gemini and Perplexity describe your business today, and what it would take to be the one they recommend.">
-  <meta property="og:image" content="https://example.com/assets/og-image.png">
+  <meta property="og:description" content="Find out how ChatGPT, Gemini and Perplexity describe your business today, and where your site could be clearer to them.">
+  <meta property="og:image" content="https://legibletechnologies.com/assets/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Legible. Your website has a new reader. Make sure it understands you.">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Contact — Legible">
-  <meta name="twitter:description" content="Find out how ChatGPT, Gemini and Perplexity describe your business today, and what it would take to be the one they recommend.">
-  <meta name="twitter:image" content="https://example.com/assets/og-image.png">
-  <!-- Enhanced styles from the first paint. If js/main.js never runs (file://, a 404,
-       a blocked module), drop back to the no-JS page once the page has loaded. -->
-  <script>{ const de = document.documentElement; de.classList.add('js');
-    addEventListener('load', () => de.classList.contains('js-ready') || de.classList.remove('js')); }</script>
+  <meta name="twitter:description" content="Find out how ChatGPT, Gemini and Perplexity describe your business today, and where your site could be clearer to them.">
+  <meta name="twitter:image" content="https://legibletechnologies.com/assets/og-image.png">
+  <!-- Sets the `js` class before first paint; see js/boot.js. -->
+  <script src="js/boot.js"></script>
   <link rel="preload" href="fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/main.css">
@@ -39,30 +35,30 @@
   "@graph": [
     {
       "@type": "Organization",
-      "@id": "https://example.com/#org",
+      "@id": "https://legibletechnologies.com/#org",
       "name": "Legible",
-      "url": "https://example.com/",
-      "logo": "https://example.com/assets/favicon.svg"
+      "url": "https://legibletechnologies.com/",
+      "logo": "https://legibletechnologies.com/assets/favicon.svg"
     },
     {
       "@type": "WebSite",
-      "@id": "https://example.com/#website",
-      "url": "https://example.com/",
+      "@id": "https://legibletechnologies.com/#website",
+      "url": "https://legibletechnologies.com/",
       "name": "Legible",
       "publisher": {
-        "@id": "https://example.com/#org"
+        "@id": "https://legibletechnologies.com/#org"
       }
     },
     {
       "@type": "ContactPage",
-      "@id": "https://example.com/contact.html#webpage",
-      "url": "https://example.com/contact.html",
+      "@id": "https://legibletechnologies.com/contact.html#webpage",
+      "url": "https://legibletechnologies.com/contact.html",
       "name": "Contact — Legible",
       "isPartOf": {
-        "@id": "https://example.com/#website"
+        "@id": "https://legibletechnologies.com/#website"
       },
       "about": {
-        "@id": "https://example.com/#org"
+        "@id": "https://legibletechnologies.com/#org"
       }
     },
     {
@@ -72,13 +68,13 @@
           "@type": "ListItem",
           "position": 1,
           "name": "Home",
-          "item": "https://example.com/"
+          "item": "https://legibletechnologies.com/"
         },
         {
           "@type": "ListItem",
           "position": 2,
           "name": "Contact",
-          "item": "https://example.com/contact.html"
+          "item": "https://legibletechnologies.com/contact.html"
         }
       ]
     }
@@ -113,16 +109,13 @@
       <div class="wrap split contact__layout">
         <div class="contact__intro">
           <h1 class="page-hero__title" id="page-title">Be <em>the answer.</em></h1>
-          <p class="lede page-hero__lede">Find out how ChatGPT, Gemini and Perplexity describe your business today, and what it would take to be the one they recommend.</p>
+          <p class="lede page-hero__lede">Find out how ChatGPT, Gemini and Perplexity describe your business today, and where your site could be clearer to them.</p>
         </div>
         <div class="contact__panel">
-          <!-- PLACEHOLDER_FORM_ENDPOINT: the form's action URL (from your form provider). -->
-          <!-- PLACEHOLDER_FORM_ENDPOINT: pre-launch notice, shown with or without JS. Delete this paragraph once the form's action is set. -->
-          <p class="contact-form__notice" data-form-notice>The form isn’t connected yet; please email <a href="mailto:PLACEHOLDER_CONTACT_EMAIL?subject=AI%20visibility%20audit" data-track="Email Fallback Click">PLACEHOLDER_CONTACT_EMAIL</a>.</p>
-          <form class="contact-form" action="PLACEHOLDER_FORM_ENDPOINT" method="POST">
+          <form class="contact-form" action="https://formspree.io/f/mqpegpzr" method="POST">
             <div class="contact-form__field">
-              <label for="cf-website">Your website</label>
-              <input id="cf-website" name="website" type="url" autocomplete="url">
+              <label for="cf-website">Your website (for example, yourcompany.com)</label>
+              <input id="cf-website" name="website" type="text" inputmode="url" autocomplete="url">
             </div>
             <div class="contact-form__field">
               <label for="cf-email">Your email (required)</label>
@@ -130,7 +123,7 @@
             </div>
             <div class="contact-form__field contact-form__field--wide">
               <label for="cf-message">What would you like to know?</label>
-              <textarea id="cf-message" name="message" rows="4"></textarea>
+              <textarea id="cf-message" name="message" rows="4" maxlength="2000"></textarea>
             </div>
             <div class="contact-form__hp" aria-hidden="true">
               <label for="cf-gotcha">Leave this field empty</label>
@@ -141,8 +134,8 @@
               <p class="contact-form__status" aria-live="polite" data-form-status></p>
             </div>
           </form>
-          <p class="contact-form__fallback">Prefer email? <a href="mailto:PLACEHOLDER_CONTACT_EMAIL?subject=AI%20visibility%20audit" data-track="Email Fallback Click">PLACEHOLDER_CONTACT_EMAIL</a></p>
-          <p class="contact__meta">PLACEHOLDER_RESPONSE_TIME</p>
+          <p class="contact__meta">We use your details only to reply. See the <a href="privacy.html">privacy notice</a>.</p>
+          <p class="contact-form__fallback">Prefer email? <a href="mailto:contact@legibletechnologies.com?subject=AI%20visibility%20audit" data-track="Email Fallback Click">contact@legibletechnologies.com</a></p>
         </div>
       </div>
     </section>
@@ -155,13 +148,14 @@
         <a class="wordmark" href="./#top" aria-label="Legible Technologies, home"><svg class="wordmark__mark" viewBox="0 0 112 128" aria-hidden="true" focusable="false"><defs><linearGradient id="lg-mark-f" x1="0" y1="0" x2="0" y2="128" gradientUnits="userSpaceOnUse"><stop offset="0"/><stop offset=".55"/><stop offset="1"/></linearGradient></defs><path fill="url(#lg-mark-f)" d="M0 31C0 25.6 2.4 21.6 7 18.6L32.6 1.5C35 -.1 38 1.2 38 4.2V112C38 120.8 30.8 128 22 128H9C4 128 0 124 0 119Z"/><path fill="url(#lg-mark-f)" d="M39.6 128C36.5 128 34.6 124.9 36.2 122.3L52.8 94C54.2 91.5 55.8 90 58.7 90H108.6C111.1 90 112.5 92.7 111.1 94.7L93.4 124.6C92 127 90.6 128 87.6 128Z"/></svg><span class="wordmark__text">Legible</span> <span class="wordmark__sub">Technologies</span></a>
       </div>
       <ul class="site-footer__links">
-        <li><a href="mailto:PLACEHOLDER_CONTACT_EMAIL">PLACEHOLDER_CONTACT_EMAIL</a></li>
+        <li><a href="mailto:contact@legibletechnologies.com">contact@legibletechnologies.com</a></li>
         <li><a href="packages.html#faq">FAQ</a></li>
         <li><a href="privacy.html">Privacy</a></li>
         <li><a href="llms.txt">/llms.txt</a></li>
         <li><a href="#main">Back to top <span aria-hidden="true">↑</span></a></li>
       </ul>
       <p class="site-footer__legal">© <span data-year>2026</span> Legible Technologies</p>
+      <p class="site-footer__legal site-footer__note">We can’t guarantee results. We optimise your site to improve its effectiveness with AI. If something on this site is hard to use, email contact@legibletechnologies.com.</p>
     </div>
   </footer>
   <!-- END shared:footer -->

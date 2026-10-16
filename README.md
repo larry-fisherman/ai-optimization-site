@@ -26,10 +26,10 @@ ES modules need to be served over HTTP. If you open `index.html` from disk (`fil
 Nothing needs building, but don't publish the whole folder. A static host serves whatever it is given, and this folder also holds `.agent/` (the build plan, status and gate log) and `.venv/` (a local Python environment). The site is only these files:
 
 ```sh
-mkdir -p dist && cp -R *.html llms.txt robots.txt sitemap.xml css js fonts assets dist/
+mkdir -p dist && cp -R *.html llms.txt robots.txt sitemap.xml favicon.ico _headers css js fonts assets dist/
 ```
 
-That makes a clean `dist/` folder (ignored by git). `tests/` and `tools/` stay out of it. If you have removed files from the site since the last copy, delete `dist/` first. Deploy that folder:
+That makes a clean `dist/` folder (ignored by git); it includes `favicon.ico` and `_headers` (the security headers, see below). If you add a `_redirects` file, add it to the line too. `tests/` and `tools/` stay out of it. If you have removed files from the site since the last copy, delete `dist/` first. Deploy that folder:
 
 - **Netlify:** drag `dist/` into the dashboard (Sites → Deploy manually). With a connected repo, set the build command to the line above and the publish directory to `dist`.
 - **Vercel:** `vercel deploy dist` (framework preset "Other", no build command). With a connected repo, set the build command to the line above and the output directory to `dist`.
@@ -42,21 +42,22 @@ Most hosts gzip/brotli text files and cache static assets by default. Lighthouse
 
 ## Configuration
 
-- **Site base URL:** every absolute URL uses `https://example.com` (canonicals, Open Graph, JSON-LD, sitemap, robots, llms.txt). Find them with `grep -rn 'https://example.com' *.html sitemap.xml robots.txt llms.txt` and replace them all at once, for example `sed -i '' 's#https://example.com#https://your-domain#g' *.html sitemap.xml robots.txt llms.txt` (macOS; drop the `''` on GNU sed). Then run the tests: the JSON-LD mirror and canonicals must still match.
-- **Form endpoint:** the `action` attribute of `.contact-form` in `contact.html` (the only place). Any endpoint that answers 2xx on success works; `js/contact.js` doesn't parse provider-specific responses. While the action starts with `PLACEHOLDER_`, the form shows "The form isn't connected yet" and points to the email link. If JS is off or fails to load, nothing can stop the post, so a static pre-launch notice above the form (`.contact-form__notice`, shown with or without JS) gives the email address instead. **Set the action before launch**, then delete that notice paragraph (it sits under a `PLACEHOLDER_FORM_ENDPOINT` comment). Also set the provider's name and privacy-policy URL in `privacy.html`.
-- **Plausible:** set `PLAUSIBLE_DOMAIN` in `js/config.js` (and `PLAUSIBLE_SRC` if you self-host or proxy the script). Use the plain `script.js`: variants such as `script.outbound-links.js` or `script.tagged-events.js` add their own click handling and would double-count the events `analytics.js` already sends. Analytics stays off, with no third-party request, while the domain starts with `PLACEHOLDER_` or is empty.
+- **Site base URL:** every absolute URL uses `https://legibletechnologies.com` (canonicals, Open Graph, JSON-LD, sitemap, robots, llms.txt). If the domain ever changes, find them with `grep -rn 'https://legibletechnologies.com' *.html sitemap.xml robots.txt llms.txt` and replace them all at once, for example `sed -i '' 's#https://legibletechnologies.com#https://new-domain#g' *.html sitemap.xml robots.txt llms.txt` (macOS; drop the `''` on GNU sed), and update `BASE` in `tests/test_site.py`. Then run the tests: the JSON-LD mirror and canonicals must still match. Cloudflare Pages may redirect `/contact.html` to `/contact`; check on a preview deploy, and if it does, switch the canonical, `og:url`, JSON-LD, sitemap and `llms.txt` URLs to the extensionless form (and update `test_canonicals` and `test_sitemap`).
+- **Form endpoint:** the `action` attribute of `.contact-form` in `contact.html` (the only place) is the Formspree endpoint `https://formspree.io/f/mqpegpzr`; notifications reach the owner through Formspree and the public contact is `contact@legibletechnologies.com`. `js/contact.js` posts with `fetch` and counts a submission as sent only when the response is OK and its JSON has no `errors` entry (Formspree answers JSON when asked for it); anything else shows the error message with the email link. It adds `https://` to the website field when the scheme is missing, and the message is limited to 2000 characters. The `_gotcha` field is Formspree's honeypot: a post that fills it is dropped. The form posts cross-origin without cookies or credentials, so there is no CSRF exposure to defend. Without JS the browser posts straight to Formspree's own page. The CSP in `_headers` allows `https://formspree.io` for `connect-src` and `form-action`. The provider is named in `privacy.html`; change both if the provider changes.
+- **Analytics (off):** `PLAUSIBLE_DOMAIN` in `js/config.js` is empty, so no script loads and no request is made; `plausible.io` is not in the CSP and the privacy notice says no analytics are used. The code stays in place. **Enabling analytics later:** (1) set `PLAUSIBLE_DOMAIN` in `js/config.js` (and `PLAUSIBLE_SRC` if you self-host or proxy the script; use the plain `script.js`, since variants such as `script.outbound-links.js` or `script.tagged-events.js` add their own click handling and would double-count the events `analytics.js` already sends); (2) add `https://plausible.io` to `script-src` and `connect-src` in `_headers`; (3) rewrite the Analytics section of `privacy.html` and the "no analytics" line in `index.html` (and `llms.txt` if it says so); (4) sanitise the 404 event first: `js/analytics.js` sends `location.pathname` as the `404` event's `path`, so send a fixed value or a truncated path without the query before turning it on. The publish gate fails if `plausible.io` appears in `_headers`, so update `tests/test_publish.py` in the same change.
+- **Security headers:** `_headers` (Cloudflare Pages format, in the deploy root) sets a strict CSP (`default-src 'self'`, no inline script or style, `connect-src`/`form-action` limited to this origin and Formspree, `frame-ancestors 'none'`), `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy` and `Strict-Transport-Security`. The `js` class bootstrap lives in `js/boot.js` for that reason, and the Lens meter's width is set through CSSOM by `js/lens.js`. After editing it, load every page on a preview and check the console for violations.
 - **Analytics events** (create them as goals in the Plausible dashboard): `CTA Click` (every link with `data-track="CTA Click"`: the header's Get started, the hero, package and Get in touch links; props `label`, `page`), `Email Fallback Click` (the email link under the form; props `label`, `page`), `Contact Form Submit` (successful submit only), `Contact Form Error` and `404` (fired on `404.html`, props `path`). The Lens, copy buttons, menu and FAQ toggles are not tracked. For a tracked link that leaves the page (every CTA now leads to another page), `analytics.js` waits for Plausible's `callback`, or 300 ms at most, before navigating, so the event isn't lost. Clicks with a modifier key or a middle click open the link as usual and may go uncounted.
 
 ## Structure
 
 | Path | What it is |
 | --- | --- |
-| `index.html` | Home page: hero with the background ocean video (poster image first), the shift section with the Lens (both layers of the mock), services, method, proof (with the JSON-LD mirror), links to the other pages; meta/OG tags and the main `@graph` JSON-LD (Organization with founder, WebSite, 5 Services) |
+| `index.html` | Home page: hero with the background ocean video (poster image first), the shift section with the Lens (both layers of the mock), services, method, proof (with the JSON-LD mirror), links to the other pages; meta/OG tags and the main `@graph` JSON-LD (Organization with a name-only founder, WebSite, 5 Services) |
 | `packages.html` | The three packages and the FAQ, with `WebPage`, `BreadcrumbList` and `FAQPage` JSON-LD |
-| `about.html` | Founder block and "How we measure", with `AboutPage` and `BreadcrumbList` JSON-LD (the founder `Person` stays on `index.html`) |
-| `contact.html` | The contact form, its pre-launch notice and email fallback, with `ContactPage` and `BreadcrumbList` JSON-LD |
+| `about.html` | A short founder line (Lucas, no personal details) and "How we measure", with `AboutPage` and `BreadcrumbList` JSON-LD (the founder `Person` stays on `index.html`) |
+| `contact.html` | The contact form (Formspree), its privacy line and email fallback, with `ContactPage` and `BreadcrumbList` JSON-LD |
 | `ai-visibility-audit.html`, `machine-readable-foundations.html`, `answer-ready-content.html`, `brand-signal-monitoring.html`, `internal-ai-readiness.html` | One page per service, with `WebPage`, `BreadcrumbList` and `Service` JSON-LD |
-| `privacy.html` | Privacy notice (a template, see Placeholders) |
+| `privacy.html` | Privacy notice (US scaffold, not legal advice; have it reviewed) |
 | `404.html` | Not-found page, `noindex`, root-absolute paths, not in the sitemap |
 | `css/tokens.css` | Palette (the only place brand colours are defined: Midnight, Blue, Mist, Charcoal), the derived page surface `--night`, the accessible blue tints, the dark semantic tokens (`--bg`, `--fg`, `--fg-soft`, `--line`, `--grid-line`…), contrast table, `@font-face`, type scale, radii, spacing, motion tokens |
 | `css/main.css` | Reset, grid lines, bloom, buttons, nav, section primitives (`.section`, `.statement`, `.split`, `.numbered`, `.cols`), home sections, inner-page template (packages, FAQ, about, contact, service, privacy, 404), footer, reveals, print |
@@ -67,15 +68,15 @@ Most hosts gzip/brotli text files and cache static assets by default. Lighthouse
 | `js/demo-data.js` | The three fictional businesses the Lens rotates through |
 | `js/reveal.js` | Scroll reveals (a short fade-up) |
 | `js/nav.js` | `aria-current="page"` on the current page's nav link, mobile menu disclosure and copy buttons |
-| `js/config.js` | `PLAUSIBLE_DOMAIN`, `PLAUSIBLE_SRC` |
-| `js/analytics.js` | Plausible loader (only when configured), `data-track` click events, `track()` |
-| `js/contact.js` | Contact form: fetch submit, status messages, mailto fallback |
+| `js/boot.js` | Sets the `js` class before first paint (classic script in every `<head>`, so the CSP needs no inline script) |
+| `js/config.js` | `PLAUSIBLE_DOMAIN` (empty: analytics off), `PLAUSIBLE_SRC` |
+| `js/analytics.js` | Plausible loader (only when configured; inert while the domain is empty), `data-track` click events, `track()` |
+| `js/contact.js` | Contact form: fetch submit, success only on an OK response without `errors`, status messages, mailto fallback |
 | `js/year.js` | Sets the footer year |
 | `fonts/` | Self-hosted latin woff2: Geist and Geist Mono (both variable, from Fontsource), plus `OFL.txt` |
 | `assets/favicon.svg` | Legible L mark, app-icon variant (Midnight rounded square, the L at ~60% so it reads at 16 px) |
 | `favicon.ico`, `assets/apple-touch-icon.png` | PNG renders of `favicon.svg`: a 16/32/48 px ICO at the site root (Safari and older browsers, which ignore SVG icons, and the default `/favicon.ico` request) and a 180 px full-bleed iOS home-screen icon. Every page links all three: ICO (`sizes="32x32"`, so Chrome still picks the SVG), SVG, apple-touch-icon. Re-render both if the SVG changes |
 | `assets/og-image.svg` / `.png` | Social card source and its 1200×630 render |
-| `assets/founder-placeholder.svg` | Neutral stand-in portrait (brand tones) for `about.html` |
 | `assets/hero/` | The hero's stock ocean footage, `ocean-540.mp4` (SD) and `ocean-720.mp4` (HD), its posters `ocean-poster-960.webp` / `ocean-poster-1280.webp` (frame 0 of the HD rendition), and `ocean-band-960.webp` / `ocean-band-1920.webp`, a Midnight-tinted strip of the clip's first frame behind the site header and the inner-page heroes; see Third-party media |
 | `llms.txt`, `robots.txt`, `sitemap.xml` | The machine-facing files |
 | `tests/test_site.py` | Site checks (shared chrome, JSON-LD, FAQ and Service sync, placeholders, sitemap, canonicals, link and anchor integrity, the form's single home, the Lens's position, no marquee and `#shift` right after the hero, the hero video markup, wiring, CSS states, asset budgets and credits, the answer card's shared cell and reserved heights); not deployed |
@@ -85,7 +86,7 @@ Most hosts gzip/brotli text files and cache static assets by default. Lighthouse
 ### How the page behaves without JS or motion
 
 - **No JS:** all content is readable. The home hero shows the still ocean poster; the video never loads. The contact form posts straight to its `action` URL, and the footer shows the year written in the HTML. The Lens, in the two-readers section, shows a static 50/50 split (human | machine), and the answer card is visible. The Lens controls and copy buttons are hidden, and the nav links show without a Menu button.
-- **JS fails:** the page ends up the same as no JS. If `js/main.js` or one of its modules can't load (a 404, `file://`, a blocked script), an inline script in `<head>` removes the `js` class once the page has loaded. If one module throws while starting, only that feature falls back (a failed hero video leaves the poster). The year and contact form modules each start in their own `run()`; if one throws, nothing visible changes (the form still posts without JS). `js/analytics.js` (and `js/config.js`) are not part of the static module graph: `main.js` loads them with a dynamic `import()`, so if a blocker, a missing file or a CSP stops them loading, the Lens, menu, reveals, year and form all keep working and only analytics is lost. `contact.js` doesn't import analytics; it queues its events in `window.legibleTrackQ`, which `analytics.js` sends once it has loaded. A failed Lens shows the static split (`.lens.is-static`), a failed nav shows plain links (`html.nav-off`), and failed reveals show everything at once.
+- **JS fails:** the page ends up the same as no JS. If `js/main.js` or one of its modules can't load (a 404, `file://`, a blocked script), `js/boot.js`'s load handler removes the `js` class once the page has loaded. If one module throws while starting, only that feature falls back (a failed hero video leaves the poster). The year and contact form modules each start in their own `run()`; if one throws, nothing visible changes (the form still posts without JS). `js/analytics.js` (and `js/config.js`) are not part of the static module graph: `main.js` loads them with a dynamic `import()`, so if a blocker, a missing file or a CSP stops them loading, the Lens, menu, reveals, year and form all keep working and only analytics is lost. `contact.js` doesn't import analytics; it queues its events in `window.legibleTrackQ`, which `analytics.js` sends once it has loaded. A failed Lens shows the static split (`.lens.is-static`), a failed nav shows plain links (`html.nav-off`), and failed reveals show everything at once.
 - **`prefers-reduced-motion: reduce`:** the hero shows the still poster, and no video is requested. No lens following, scan band, wipes, reveals or auto-advance. The Lens stays in the static split, and the Human/Machine view buttons and business tabs still work, with instant swaps. The Pause button is hidden because nothing moves on its own. Changing the setting while the page is open takes effect straight away.
 - **Hero video:** a muted, looping ocean clip behind the home hero, under a scrim of night and midnight alphas over a Blue .14 layer (which pulls the teal footage toward the brand blues) that fades into the page. It loads only after the page's `load` event, so it never competes with fonts, CSS or the poster; the rendition is chosen once, by CSS viewport width: the SD file below 1024 px (every phone, however dense its screen) and the HD file from 1024 px up, except on a cellular or 3G connection where the browser reports one (`navigator.connection`), which always get SD. It fades in over the poster once it plays. The poster alone is shown without JS, with reduced motion (also when the setting changes while the page is open: the video pauses and the poster returns, and it resumes when the setting is turned off again), on Save-Data, on a 2G connection or with `prefers-reduced-data`, if `js/hero-media.js` throws (`.hero__media.is-static`), and in print (where the media and its button are hidden). If the browser refuses to autoplay (Low Power Mode, an autoplay policy), the poster stays and the button offers Play. If the video can't play at all (a missing or truncated file, a wrong MIME type, no H.264 decoder), the poster stays and the button is hidden for the rest of the visit, so there is no control that does nothing.
 - **Hero Pause/Play:** a button at the top right of the hero stops the video (WCAG 2.2.2). A visitor's pause sticks until they press Play; nothing resumes it on its own, and it isn't remembered across visits. The video also pauses while the hero is off-screen and in a hidden tab, and resumes when it comes back unless the visitor paused it. A pause caused by scrolling away or hiding the tab is not a visitor's pause, so the button keeps saying Pause. With reduced motion turned on, the button is hidden; turned off again, a paused video comes back with its Play button (and stays paused), an unpaused one resumes.
@@ -96,7 +97,7 @@ Most hosts gzip/brotli text files and cache static assets by default. Lighthouse
 
 - **Shared header and footer:** each page has `<!-- BEGIN shared:header -->…<!-- END shared:header -->` and the same for the footer. They are copied verbatim, byte for byte, from `index.html` into every page. `404.html` is the one exception: the same blocks with root-absolute links (`./#services` → `/#services`, `packages.html` → `/packages.html`, `packages.html#faq` → `/packages.html#faq`). Edit `index.html`, then copy the blocks to the other pages. The nav marks the current page itself: `js/nav.js` sets `aria-current="page"` on the link whose page matches the URL (section links such as `./#services` are never marked), so the blocks stay identical.
 - **JSON-LD mirror:** the JSON-LD shown in the home page's Proof section ("View the JSON-LD") is a copy of the main `@graph` `<script type="application/ld+json">` in `index.html`'s `<head>`. If you edit one, update the other (HTML-escape `&`, `<`, `>` in the `<pre>`). `llms.txt` is no longer shown on the page, so it can change on its own.
-- **FAQ:** on `packages.html`, each visible answer in the FAQ section must equal the `text` of its question in the `FAQPage` JSON-LD in that page's `<head>`, placeholder tokens included.
+- **FAQ:** on `packages.html`, each visible answer in the FAQ section must equal the `text` of its question in the `FAQPage` JSON-LD in that page's `<head>`.
 - **Services:** the `Service` nodes in the `index.html` JSON-LD and on each service page share the same `@id`, name, `serviceType` and description. Change both.
 - The Lens markup in `index.html` uses `data-slot` / `data-label-key` attributes named after the fields in `js/demo-data.js`. `lens.js` fills them when the business changes, including the hidden text alternative `#lens-desc`. Keep the names matching.
 - The company name lives in: every page's `<title>`, meta/OG tags and JSON-LD, `llms.txt`, the two wordmarks (shared header and footer; they read "Legible Technologies", and "Technologies" hides in the header below 960px), the hero sub, the footer copyright, `privacy.html` ("trading as Legible") and `assets/og-image.svg`.
@@ -146,51 +147,22 @@ The renditions are used as downloaded (no re-encode). The SD file is over the ol
 
 ## Placeholders
 
-Every unknown fact (person, price, timeline, result, contact detail, legal entity) is a `PLACEHOLDER_*` token in the source. Find them all with:
+There are no `PLACEHOLDER_*` tokens left: every unknown fact was either supplied by the owner or removed. The publish gate (`tests/test_publish.py`) fails on any `PLACEHOLDER_` in the deploy set, comments included, and on any `https://example.com`. `test_tokens_match_readme` still checks that tokens in the source and in a table here match both ways, so if you introduce a new `PLACEHOLDER_*` token, list it in a table row below, and remove it again before publishing. Find tokens with:
 
 ```sh
 grep -rnoE 'PLACEHOLDER_[A-Z0-9_]+' --exclude-dir=.venv --exclude-dir=.agent --exclude-dir=tests .
 ```
 
-Absolute URLs that must stay valid (canonical, `og:url`, sitemap `<loc>`, JSON-LD `url`/`@id`/`logo`) can't hold a token, so they keep the reserved `https://example.com` and are named by a token in a comment instead. The test checks that this table and the tokens in the source match both ways.
-
 | Token | What it is | Where |
 | --- | --- | --- |
-| `PLACEHOLDER_SITE_URL` | The real site base URL, replacing every `https://example.com` (see Configuration) | comment in the `<head>` of `index.html`, `packages.html`, `about.html`, `contact.html`, the five service pages and `privacy.html`, plus `sitemap.xml` and `robots.txt`. The URLs themselves are also in those pages' meta tags and JSON-LD and in `llms.txt` (`404.html` has none) |
-| `PLACEHOLDER_CONTACT_EMAIL` | Public contact email | shared footer on every page (`index.html`, `packages.html`, `about.html`, `contact.html`, `ai-visibility-audit.html`, `machine-readable-foundations.html`, `answer-ready-content.html`, `brand-signal-monitoring.html`, `internal-ai-readiness.html`, `privacy.html`, `404.html`), the form's pre-launch notice and email fallback links in `contact.html`, JSON-LD `email` in `index.html`, `llms.txt` |
-| `PLACEHOLDER_FORM_ENDPOINT` | Form provider's POST URL (`action` of `.contact-form`); once set, also delete the pre-launch notice paragraph marked by this token | `contact.html` |
-| `PLACEHOLDER_PLAUSIBLE_DOMAIN` | Domain as registered in Plausible | `js/config.js` |
-| `PLACEHOLDER_RESPONSE_TIME` | Response-time promise under the form (replaces the invented "< 1 business day"; delete the line if there is none) | `contact.html` |
-| `PLACEHOLDER_LOGO` | Real logo URL for the JSON-LD `logo` (currently the favicon) | comment in the `<head>` of `index.html`, `packages.html`, `about.html`, `contact.html`, the five service pages and `privacy.html`, next to the JSON-LD that holds the value |
-| `PLACEHOLDER_COMPANY_LINKEDIN` | Company LinkedIn slug (`sameAs`) | `index.html` JSON-LD |
-| `PLACEHOLDER_AREA_SERVED` | Where Legible works (country, region or "Worldwide") | `index.html` JSON-LD, the `Service` JSON-LD on `ai-visibility-audit.html`, `machine-readable-foundations.html`, `answer-ready-content.html`, `brand-signal-monitoring.html`, `internal-ai-readiness.html`, `llms.txt` |
-| `PLACEHOLDER_FOUNDER_NAME` | Founder's name | `about.html` founder block and image alt, `index.html` JSON-LD `founder`, `llms.txt` |
-| `PLACEHOLDER_FOUNDER_ROLE` | Founder's job title | `about.html` founder block, `index.html` JSON-LD `founder`, `llms.txt` |
-| `PLACEHOLDER_FOUNDER_BIO` | Short founder bio | `about.html` founder block |
-| `PLACEHOLDER_FOUNDER_PHOTO` | Real portrait to replace `assets/founder-placeholder.svg` (also referenced by the JSON-LD `founder.image`) | comment in `about.html` founder block, `assets/founder-placeholder.svg` |
-| `PLACEHOLDER_FOUNDER_LINKEDIN` | Founder's LinkedIn slug | `about.html` LinkedIn link, `index.html` JSON-LD `founder.sameAs` |
-| `PLACEHOLDER_PRICE_AUDIT` | Starting price of the AI visibility audit | `packages.html`, `llms.txt` |
-| `PLACEHOLDER_PRICE_MONITORING` | Starting price of the monitoring retainer, including the billing unit | `packages.html`, `llms.txt` |
-| `PLACEHOLDER_TIMELINE_SNAPSHOT` | Turnaround of the free AI snapshot | `packages.html`, `llms.txt` |
-| `PLACEHOLDER_TIMELINE_AUDIT` | Turnaround of the audit | `packages.html`, `llms.txt` |
-| `PLACEHOLDER_TIMELINE_MONITORING` | Term of the monitoring retainer | `packages.html`, `llms.txt` |
-| `PLACEHOLDER_FAQ_TIME_TO_RESULTS` | Answer to "How long until we see results?" (visible FAQ and `FAQPage` JSON-LD must match) | `packages.html` FAQ and FAQPage JSON-LD |
-| `PLACEHOLDER_LEGAL_ENTITY_NAME` | Legal entity that runs the site | `privacy.html` |
-| `PLACEHOLDER_PRIVACY_CONTACT_EMAIL` | Email for privacy requests | `privacy.html` |
-| `PLACEHOLDER_PRIVACY_EFFECTIVE_DATE` | Date the privacy notice takes effect | `privacy.html` |
-| `PLACEHOLDER_FORM_PROVIDER_NAME` | Name of the form provider | `privacy.html` |
-| `PLACEHOLDER_FORM_PROVIDER_PRIVACY_URL` | Form provider's privacy policy URL | `privacy.html` |
-| `PLACEHOLDER_DATA_RETENTION` | How long contact form messages and emails are kept | `privacy.html` |
-| `PLACEHOLDER_PRIVACY_JURISDICTION_TEXT` | Jurisdiction-specific rights wording (e.g. GDPR, CCPA) | `privacy.html` |
-| `PLACEHOLDER_CLIENT_PROOF` | Client logos / case-study tiles; `.proof__clients` stays `hidden` until real, approved proof exists | comment in `index.html` Proof section |
 
-`privacy.html` is a template to be reviewed, not legal advice. Have it checked before launch.
+Wording written on the owner's behalf (the founder line, package scope, FAQ answers, disclaimer, privacy notice) is draft copy for the owner's approval, not a fact supplied by the owner. The privacy notice is a US scaffold, not legal advice; have it checked.
 
 Not tokens, listed here with the reason:
 
 | What | Where | Current value |
 | --- | --- | --- |
-| Company name | see "Keeping things in sync": decided for now, and it appears in too many places to mark each one | Legible |
+| Company name | see "Keeping things in sync": it appears in too many places to mark each one | Legible Technologies |
 | Logo | the L mark + Geist wordmark with a Geist Mono "Technologies" descriptor after a hairline (inline SVG in the shared header and footer) and `assets/favicon.svg`: hand-traced from the brand sheet, pending the official vector | L mark |
 | Copy and tone | all page copy, `llms.txt`: it's every sentence on the site | placeholder editorial copy for approval |
 | FAQ answers needing owner approval | `packages.html` FAQ ("Is this just SEO?", "Can you guarantee we’ll be cited?", "Do I need a new website?") and the matching `FAQPage` JSON-LD | written from existing copy; confirm "we work with the site you have" in particular |
@@ -214,5 +186,5 @@ Run headless on a local server with Chrome. Lighthouse 12.8.2, mobile preset, on
 - The video doesn't count against first paint: it is requested only after `load`. On Lighthouse's mobile viewport (412 px CSS width, below 1024) that is the SD file, 2,813,303 B; screens 1024 px wide and up get the HD file, 4,067,135 B. Home's total transfer is 2.99 MB, of which 2.81 MB is the video. Contact's is 97 KB, including the 15 KB band, which the header and the page hero share as a single request.
 - Hero text contrast over the video (`tools/browser/hero-contrast.mjs`, 348 frames over both renditions at 375, 768 and 1440): the worst cases are in the `css/tokens.css` header. The sub is at 4.9:1.
 - axe-core 4.14 (`tools/browser/axe.mjs`): 0 violations on home with the video playing (1440 and 375 touch), with reduced motion and without JS, and on contact at 1440 and 375 touch.
-- JS: 26,795 B of source in `js/` (`hero-media.js` is 2,852 B) plus the 164 B inline script. The old < 16,000 B budget no longer holds; it predates the contact form, analytics and the hero video.
+- JS: 26,795 B of source in `js/` (`hero-media.js` is 2,852 B) plus the tiny `js/boot.js`. The old < 16,000 B budget no longer holds; it predates the contact form, analytics and the hero video.
 - Not re-run for this change: html-validate (0 problems with the `standard` preset on 2026-10-09, before the multi-page change) and validator.schema.org (0 errors, 0 warnings then).

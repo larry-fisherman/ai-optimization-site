@@ -5,31 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Legible — Get found, understood and cited by AI</title>
   <meta name="description" content="Legible is a studio that makes websites AI assistants read correctly, so ChatGPT, Gemini, Perplexity and AI search can find, understand and cite your business.">
-  <link rel="canonical" href="https://example.com/">
+  <link rel="canonical" href="https://legibletechnologies.com/">
   <meta name="theme-color" content="#071A2E">
   <link rel="icon" href="favicon.ico" sizes="32x32">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <link rel="alternate" type="text/markdown" href="llms.txt" title="llms.txt">
-  <!-- PLACEHOLDER_SITE_URL: every https://example.com (canonical, Open Graph, JSON-LD, sitemap, robots, llms.txt). JSON can't carry a comment, so it is named here. -->
-  <!-- PLACEHOLDER_LOGO: the JSON-LD "logo" URL below (stand-in: assets/favicon.svg). -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Legible">
-  <meta property="og:url" content="https://example.com/">
+  <meta property="og:url" content="https://legibletechnologies.com/">
   <meta property="og:title" content="Legible — Get found, understood and cited by AI">
   <meta property="og:description" content="Your website has a new reader. Legible makes sure AI assistants understand you, and cite you.">
-  <meta property="og:image" content="https://example.com/assets/og-image.png">
+  <meta property="og:image" content="https://legibletechnologies.com/assets/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Legible. Your website has a new reader. Make sure it understands you.">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Legible — Get found, understood and cited by AI">
   <meta name="twitter:description" content="Your website has a new reader. Legible makes sure AI assistants understand you, and cite you.">
-  <meta name="twitter:image" content="https://example.com/assets/og-image.png">
-  <!-- Enhanced styles from the first paint. If js/main.js never runs (file://, a 404,
-       a blocked module), drop back to the no-JS page once the page has loaded. -->
-  <script>{ const de = document.documentElement; de.classList.add('js');
-    addEventListener('load', () => de.classList.contains('js-ready') || de.classList.remove('js')); }</script>
+  <meta name="twitter:image" content="https://legibletechnologies.com/assets/og-image.png">
+  <!-- Sets the `js` class before first paint; see js/boot.js. -->
+  <script src="js/boot.js"></script>
   <link rel="preload" href="fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/main.css">
@@ -42,76 +38,72 @@
   "@graph": [
     {
       "@type": "Organization",
-      "@id": "https://example.com/#org",
+      "@id": "https://legibletechnologies.com/#org",
       "name": "Legible",
-      "url": "https://example.com/",
-      "logo": "https://example.com/assets/favicon.svg",
-      "email": "PLACEHOLDER_CONTACT_EMAIL",
-      "description": "A studio that makes websites readable by AI assistants and answer engines, so businesses get found, understood and accurately cited.",
+      "url": "https://legibletechnologies.com/",
+      "logo": "https://legibletechnologies.com/assets/favicon.svg",
+      "email": "contact@legibletechnologies.com",
+      "description": "A studio that makes websites readable by AI assistants and answer engines, so businesses get found, understood and represented accurately.",
       "knowsAbout": ["Answer engine optimization", "Generative engine optimization", "Structured data"],
-      "areaServed": "PLACEHOLDER_AREA_SERVED",
-      "sameAs": ["https://www.linkedin.com/company/PLACEHOLDER_COMPANY_LINKEDIN"],
+      "areaServed": "United States",
       "founder": {
         "@type": "Person",
-        "@id": "https://example.com/#founder",
-        "name": "PLACEHOLDER_FOUNDER_NAME",
-        "jobTitle": "PLACEHOLDER_FOUNDER_ROLE",
-        "image": "https://example.com/assets/founder-placeholder.svg",
-        "sameAs": ["https://www.linkedin.com/in/PLACEHOLDER_FOUNDER_LINKEDIN"]
+        "@id": "https://legibletechnologies.com/#founder",
+        "name": "Lucas"
       }
     },
     {
       "@type": "WebSite",
-      "@id": "https://example.com/#website",
-      "url": "https://example.com/",
+      "@id": "https://legibletechnologies.com/#website",
+      "url": "https://legibletechnologies.com/",
       "name": "Legible",
       "inLanguage": "en",
-      "publisher": { "@id": "https://example.com/#org" }
+      "publisher": { "@id": "https://legibletechnologies.com/#org" }
     },
     {
       "@type": "Service",
-      "@id": "https://example.com/ai-visibility-audit.html#service",
-      "url": "https://example.com/ai-visibility-audit.html",
+      "@id": "https://legibletechnologies.com/ai-visibility-audit.html#service",
+      "url": "https://legibletechnologies.com/ai-visibility-audit.html",
       "name": "AI Visibility Audit",
       "serviceType": "AI visibility audit",
       "description": "How a business shows up across ChatGPT, Gemini, Perplexity and AI search today, and who gets cited instead.",
-      "provider": { "@id": "https://example.com/#org" }
+      "provider": { "@id": "https://legibletechnologies.com/#org" }
     },
     {
       "@type": "Service",
-      "@id": "https://example.com/machine-readable-foundations.html#service",
-      "url": "https://example.com/machine-readable-foundations.html",
+      "@id": "https://legibletechnologies.com/machine-readable-foundations.html#service",
+      "url": "https://legibletechnologies.com/machine-readable-foundations.html",
       "name": "Machine-Readable Foundations",
       "serviceType": "Structured data and technical AI optimization",
       "description": "Schema and JSON-LD, semantic structure and crawl access, plus supporting files such as llms.txt.",
-      "provider": { "@id": "https://example.com/#org" }
+      "provider": { "@id": "https://legibletechnologies.com/#org" }
     },
     {
       "@type": "Service",
-      "@id": "https://example.com/answer-ready-content.html#service",
-      "url": "https://example.com/answer-ready-content.html",
+      "@id": "https://legibletechnologies.com/answer-ready-content.html#service",
+      "url": "https://legibletechnologies.com/answer-ready-content.html",
       "name": "Answer-Ready Content",
       "serviceType": "Content restructuring for AI answers",
       "description": "Restructuring pages into the clear, citable claims that language models retrieve.",
-      "provider": { "@id": "https://example.com/#org" }
+      "provider": { "@id": "https://legibletechnologies.com/#org" }
     },
     {
       "@type": "Service",
-      "@id": "https://example.com/brand-signal-monitoring.html#service",
-      "url": "https://example.com/brand-signal-monitoring.html",
+      "@id": "https://legibletechnologies.com/brand-signal-monitoring.html#service",
+      "url": "https://legibletechnologies.com/brand-signal-monitoring.html",
       "name": "Brand Signal Monitoring",
       "serviceType": "AI brand monitoring",
       "description": "Tracking how AI describes a business over time, and fixing drift at the source.",
-      "provider": { "@id": "https://example.com/#org" }
+      "provider": { "@id": "https://legibletechnologies.com/#org" }
     },
     {
       "@type": "Service",
-      "@id": "https://example.com/internal-ai-readiness.html#service",
-      "url": "https://example.com/internal-ai-readiness.html",
+      "@id": "https://legibletechnologies.com/internal-ai-readiness.html#service",
+      "url": "https://legibletechnologies.com/internal-ai-readiness.html",
       "name": "Internal AI Readiness",
       "serviceType": "AI enablement and adoption",
       "description": "Helping teams adopt AI tools well: practical enablement, shared guidelines and workflows.",
-      "provider": { "@id": "https://example.com/#org" }
+      "provider": { "@id": "https://legibletechnologies.com/#org" }
     }
   ]
 }
@@ -153,7 +145,7 @@
         <h1 class="hero__title" id="hero-title">Your website has a new reader. <em>Make sure it understands&nbsp;you.</em></h1>
         <div class="hero__foot">
           <div class="hero__aside">
-            <p class="hero__sub">Legible gets businesses found, understood and cited by ChatGPT, Gemini, Perplexity and AI&nbsp;search, by making your site as clear to machines as it is to people.</p>
+            <p class="hero__sub">Legible optimises your website so AI assistants can find, understand and describe your business accurately.</p>
             <a class="button" href="contact.html" data-track="CTA Click">Get an AI visibility audit</a>
           </div>
           <a class="link-arrow hero__cue" href="#lens">See how AI reads you <span aria-hidden="true">↓</span></a>
@@ -227,7 +219,7 @@
                     <pre class="mock__json" data-slot="json" data-tok="18">{"@type": "CafeOrCoffeeShop",
  "name": "Hollis &amp; Pine",
  "priceRange": "$$"}</pre>
-                    <div class="meter"><span class="meter__label">confidence</span><span class="meter__track"><span class="meter__fill" data-slot="meter" style="--v: .64"></span></span><span class="meter__value" data-slot="meterValue">0.64</span></div>
+                    <div class="meter"><span class="meter__label">confidence</span><span class="meter__track"><span class="meter__fill" data-slot="meter"></span></span><span class="meter__value" data-slot="meterValue">0.64</span></div>
                   </div>
                 </div>
               </div>
@@ -243,7 +235,7 @@
           <p class="visually-hidden" id="lens-desc" aria-hidden="true">Demo: a mock website for <span data-slot="name">Hollis &amp; Pine</span>, <span data-slot="type">a fictional coffee roaster</span>. To a person it is an ordinary page with a headline, an image, a key fact, a star rating and a button. An AI system splits the headline into tokens, recognises <span data-slot="ents">the business name, the product, the $18 price and the rating</span> as entities, ignores the image because it has no alt text, and finds no meaning in a button labelled “<span data-slot="cta">Click here</span>”.</p>
           <!-- Not a <figcaption>: that must be the figure's first or last child, and this sits mid-figure. aria-labelledby names the figure. -->
           <p class="lens__caption">
-            <span class="lens__legend mono" id="lens-legend">fig. 1 — the same page, read twice</span>
+            <span class="lens__legend mono" id="lens-legend">fig. 1 — the same page, read twice. Illustrative example: fictional businesses</span>
           </p>
   
           <p class="visually-hidden" aria-live="polite" data-lens-live></p>
@@ -332,16 +324,15 @@
               <li>Semantic landmarks and a single, clear <code>h1</code></li>
               <li><code>Organization</code>, <code>WebSite</code> and <code>Service</code> structured data</li>
               <li>A <a href="robots.txt"><code>robots.txt</code></a> that welcomes AI crawlers, plus a sitemap</li>
-              <li>Self-hosted fonts, no cookies, and only cookieless analytics, when enabled</li>
+              <li>Self-hosted fonts, no cookies and no analytics</li>
               <li>Plus an <a href="llms.txt"><code>llms.txt</code></a> for the models that read one</li>
             </ul>
           </div>
         </div>
         <figure class="research" data-reveal>
-          <p class="research__finding">Aggarwal et al., “GEO: Generative Engine Optimization,” KDD 2024, found adding citations, quotations and statistics made pages up to 40% more visible in AI answers.</p>
+          <p class="research__finding">In a 2024 research study, adding citations, quotations and statistics increased visibility in generative-engine answers by up to 40% on that study’s benchmark. Results on any given site vary; this is not a prediction or a promise.</p>
           <figcaption class="research__source">Source: <cite><a href="https://arxiv.org/abs/2311.09735" rel="noopener">Aggarwal et al., “GEO: Generative Engine Optimization,” KDD 2024</a></cite></figcaption>
         </figure>
-        <p class="research__pilot">Pilot results publishing soon.</p>
         <details class="proof__source">
           <summary>View the JSON-LD</summary>
           <!-- Keep identical to the main @graph JSON-LD in <head>. -->
@@ -358,83 +349,79 @@
   "@graph": [
     {
       "@type": "Organization",
-      "@id": "https://example.com/#org",
+      "@id": "https://legibletechnologies.com/#org",
       "name": "Legible",
-      "url": "https://example.com/",
-      "logo": "https://example.com/assets/favicon.svg",
-      "email": "PLACEHOLDER_CONTACT_EMAIL",
-      "description": "A studio that makes websites readable by AI assistants and answer engines, so businesses get found, understood and accurately cited.",
+      "url": "https://legibletechnologies.com/",
+      "logo": "https://legibletechnologies.com/assets/favicon.svg",
+      "email": "contact@legibletechnologies.com",
+      "description": "A studio that makes websites readable by AI assistants and answer engines, so businesses get found, understood and represented accurately.",
       "knowsAbout": ["Answer engine optimization", "Generative engine optimization", "Structured data"],
-      "areaServed": "PLACEHOLDER_AREA_SERVED",
-      "sameAs": ["https://www.linkedin.com/company/PLACEHOLDER_COMPANY_LINKEDIN"],
+      "areaServed": "United States",
       "founder": {
         "@type": "Person",
-        "@id": "https://example.com/#founder",
-        "name": "PLACEHOLDER_FOUNDER_NAME",
-        "jobTitle": "PLACEHOLDER_FOUNDER_ROLE",
-        "image": "https://example.com/assets/founder-placeholder.svg",
-        "sameAs": ["https://www.linkedin.com/in/PLACEHOLDER_FOUNDER_LINKEDIN"]
+        "@id": "https://legibletechnologies.com/#founder",
+        "name": "Lucas"
       }
     },
     {
       "@type": "WebSite",
-      "@id": "https://example.com/#website",
-      "url": "https://example.com/",
+      "@id": "https://legibletechnologies.com/#website",
+      "url": "https://legibletechnologies.com/",
       "name": "Legible",
       "inLanguage": "en",
-      "publisher": { "@id": "https://example.com/#org" }
+      "publisher": { "@id": "https://legibletechnologies.com/#org" }
     },
     {
       "@type": "Service",
-      "@id": "https://example.com/ai-visibility-audit.html#service",
-      "url": "https://example.com/ai-visibility-audit.html",
+      "@id": "https://legibletechnologies.com/ai-visibility-audit.html#service",
+      "url": "https://legibletechnologies.com/ai-visibility-audit.html",
       "name": "AI Visibility Audit",
       "serviceType": "AI visibility audit",
       "description": "How a business shows up across ChatGPT, Gemini, Perplexity and AI search today, and who gets cited instead.",
-      "provider": { "@id": "https://example.com/#org" }
+      "provider": { "@id": "https://legibletechnologies.com/#org" }
     },
     {
       "@type": "Service",
-      "@id": "https://example.com/machine-readable-foundations.html#service",
-      "url": "https://example.com/machine-readable-foundations.html",
+      "@id": "https://legibletechnologies.com/machine-readable-foundations.html#service",
+      "url": "https://legibletechnologies.com/machine-readable-foundations.html",
       "name": "Machine-Readable Foundations",
       "serviceType": "Structured data and technical AI optimization",
       "description": "Schema and JSON-LD, semantic structure and crawl access, plus supporting files such as llms.txt.",
-      "provider": { "@id": "https://example.com/#org" }
+      "provider": { "@id": "https://legibletechnologies.com/#org" }
     },
     {
       "@type": "Service",
-      "@id": "https://example.com/answer-ready-content.html#service",
-      "url": "https://example.com/answer-ready-content.html",
+      "@id": "https://legibletechnologies.com/answer-ready-content.html#service",
+      "url": "https://legibletechnologies.com/answer-ready-content.html",
       "name": "Answer-Ready Content",
       "serviceType": "Content restructuring for AI answers",
       "description": "Restructuring pages into the clear, citable claims that language models retrieve.",
-      "provider": { "@id": "https://example.com/#org" }
+      "provider": { "@id": "https://legibletechnologies.com/#org" }
     },
     {
       "@type": "Service",
-      "@id": "https://example.com/brand-signal-monitoring.html#service",
-      "url": "https://example.com/brand-signal-monitoring.html",
+      "@id": "https://legibletechnologies.com/brand-signal-monitoring.html#service",
+      "url": "https://legibletechnologies.com/brand-signal-monitoring.html",
       "name": "Brand Signal Monitoring",
       "serviceType": "AI brand monitoring",
       "description": "Tracking how AI describes a business over time, and fixing drift at the source.",
-      "provider": { "@id": "https://example.com/#org" }
+      "provider": { "@id": "https://legibletechnologies.com/#org" }
     },
     {
       "@type": "Service",
-      "@id": "https://example.com/internal-ai-readiness.html#service",
-      "url": "https://example.com/internal-ai-readiness.html",
+      "@id": "https://legibletechnologies.com/internal-ai-readiness.html#service",
+      "url": "https://legibletechnologies.com/internal-ai-readiness.html",
       "name": "Internal AI Readiness",
       "serviceType": "AI enablement and adoption",
       "description": "Helping teams adopt AI tools well: practical enablement, shared guidelines and workflows.",
-      "provider": { "@id": "https://example.com/#org" }
+      "provider": { "@id": "https://legibletechnologies.com/#org" }
     }
   ]
 }</pre>
             </div>
           </div>
         </details>
-        <!-- PLACEHOLDER_CLIENT_PROOF: client logos / case-study tiles. Keep hidden until real, approved proof exists. -->
+        <!-- Client logos / case-study tiles: keep hidden until real, approved proof exists. -->
         <div class="proof__clients" hidden></div>
       </div>
     </section>
@@ -449,11 +436,11 @@
           </li>
           <li data-reveal>
             <h2 class="next__title"><a href="about.html">Who is <em>behind Legible.</em></a></h2>
-            <p>A studio that makes websites readable by AI assistants and answer engines, so businesses get found, understood and accurately cited.</p>
+            <p>A studio that makes websites readable by AI assistants and answer engines, so businesses get found, understood and represented accurately.</p>
           </li>
           <li data-reveal>
             <h2 class="next__title"><a href="contact.html">Be <em>the answer.</em></a></h2>
-            <p>Find out how ChatGPT, Gemini and Perplexity describe your business today, and what it would take to be the one they recommend.</p>
+            <p>Find out how ChatGPT, Gemini and Perplexity describe your business today, and where your site could be clearer to them.</p>
           </li>
         </ul>
       </div>
@@ -467,13 +454,14 @@
         <a class="wordmark" href="./#top" aria-label="Legible Technologies, home"><svg class="wordmark__mark" viewBox="0 0 112 128" aria-hidden="true" focusable="false"><defs><linearGradient id="lg-mark-f" x1="0" y1="0" x2="0" y2="128" gradientUnits="userSpaceOnUse"><stop offset="0"/><stop offset=".55"/><stop offset="1"/></linearGradient></defs><path fill="url(#lg-mark-f)" d="M0 31C0 25.6 2.4 21.6 7 18.6L32.6 1.5C35 -.1 38 1.2 38 4.2V112C38 120.8 30.8 128 22 128H9C4 128 0 124 0 119Z"/><path fill="url(#lg-mark-f)" d="M39.6 128C36.5 128 34.6 124.9 36.2 122.3L52.8 94C54.2 91.5 55.8 90 58.7 90H108.6C111.1 90 112.5 92.7 111.1 94.7L93.4 124.6C92 127 90.6 128 87.6 128Z"/></svg><span class="wordmark__text">Legible</span> <span class="wordmark__sub">Technologies</span></a>
       </div>
       <ul class="site-footer__links">
-        <li><a href="mailto:PLACEHOLDER_CONTACT_EMAIL">PLACEHOLDER_CONTACT_EMAIL</a></li>
+        <li><a href="mailto:contact@legibletechnologies.com">contact@legibletechnologies.com</a></li>
         <li><a href="packages.html#faq">FAQ</a></li>
         <li><a href="privacy.html">Privacy</a></li>
         <li><a href="llms.txt">/llms.txt</a></li>
         <li><a href="#main">Back to top <span aria-hidden="true">↑</span></a></li>
       </ul>
       <p class="site-footer__legal">© <span data-year>2026</span> Legible Technologies</p>
+      <p class="site-footer__legal site-footer__note">We can’t guarantee results. We optimise your site to improve its effectiveness with AI. If something on this site is hard to use, email contact@legibletechnologies.com.</p>
     </div>
   </footer>
   <!-- END shared:footer -->

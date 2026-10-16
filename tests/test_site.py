@@ -8,7 +8,7 @@ import unittest
 import xml.etree.ElementTree as ET
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BASE = 'https://example.com'
+BASE = 'https://legibletechnologies.com'
 TOKEN = re.compile(r'PLACEHOLDER_[A-Z0-9_]+')
 NAV = ['./#services', './#method', 'packages.html', 'about.html', 'contact.html']
 
@@ -101,7 +101,7 @@ class JsonLd(unittest.TestCase):
         docs = [json.loads(b) for b in ld_blocks(src)]
         graph = next(d['@graph'] for d in docs if '@graph' in d)
         org = next(n for n in graph if n['@type'] == 'Organization')
-        for key in ('logo', 'sameAs', 'founder', 'areaServed'):
+        for key in ('logo', 'founder', 'areaServed'):
             self.assertIn(key, org)
         # the FAQ lives on packages.html now
         self.assertNotIn('FAQPage', src)
@@ -260,7 +260,7 @@ class ContactAndLens(unittest.TestCase):
         homes = {p: read(p).count('class="contact-form"') for p in pages()}
         self.assertEqual({p: n for p, n in homes.items() if n}, {'contact.html': 1})
         action = re.search(r'<form class="contact-form" action="([^"]*)"', read('contact.html')).group(1)
-        self.assertTrue(action.startswith(('PLACEHOLDER_FORM_ENDPOINT', 'https://')), action)
+        self.assertEqual(action, 'https://formspree.io/f/mqpegpzr')
 
     def test_lens_on_home(self):
         src = read('index.html')
@@ -382,7 +382,7 @@ class Research(unittest.TestCase):
         start = proof.index('<figure class="research"')
         rest = proof[start:]
         self.assertIn('https://arxiv.org/abs/2311.09735', rest[:rest.index('</figure>')])
-        self.assertIn('Pilot results publishing soon', rest)
+        self.assertNotIn('Pilot results', rest)  # no pilot results exist; the plan removed the line
 
 
 if __name__ == '__main__':

@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 400" width="320" height="400">
-  <!-- PLACEHOLDER_FOUNDER_PHOTO: neutral stand-in portrait. Replace with a real photo. -->
-  <!-- brand tones (hex repeated from css/tokens.css): Midnight ground, a low-contrast Mist figure -->
-  <rect width="320" height="400" fill="#0A2540"/>
-  <circle cx="160" cy="150" r="62" fill="#E5E7EB" fill-opacity=".1" stroke="#E5E7EB" stroke-opacity=".28" stroke-width="1.5"/>
-  <path d="M48 400c0-78 50-132 112-132s112 54 112 132" fill="#E5E7EB" fill-opacity=".1" stroke="#E5E7EB" stroke-opacity=".28" stroke-width="1.5"/>
-</svg>

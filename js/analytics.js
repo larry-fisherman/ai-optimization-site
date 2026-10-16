@@ -5,7 +5,7 @@
 // window.legibleTrack (queued in window.legibleTrackQ until this runs).
 import { PLAUSIBLE_DOMAIN, PLAUSIBLE_SRC } from './config.js';
 
-const enabled = () => Boolean(PLAUSIBLE_DOMAIN) && !PLAUSIBLE_DOMAIN.startsWith('PLACEHOLDER_');
+const enabled = () => Boolean(PLAUSIBLE_DOMAIN);
 
 export function track(name, props, callback) {
   if (!enabled() || typeof window.plausible !== 'function') { callback?.(); return; }

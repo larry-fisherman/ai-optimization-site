@@ -1,5 +1,5 @@
 // Contact form: progressive enhancement over a plain POST to the form's action.
-// Provider-agnostic: any endpoint that answers 2xx on success works.
+// Formspree answers JSON: a 2xx without an `errors` entry is a success.
 // Analytics is optional and loaded separately: queue events until it is ready.
 const track = (...args) => (window.legibleTrack ? window.legibleTrack(...args) : (window.legibleTrackQ ||= []).push(args));
 
@@ -21,18 +21,14 @@ export function initContact() {
 
   form.addEventListener('submit', async e => {
     e.preventDefault();
-    if (action.startsWith('PLACEHOLDER_')) {
-      // The static pre-launch notice above the form already gives the email address.
-      const notice = document.querySelector('[data-form-notice]');
-      if (notice) say('Not sent. See the note above the form.');
-      else say('The form isn’t connected yet. Please email us instead:', true);
-      return;
-    }
+    const site = form.elements.website;
+    if (site && site.value.trim() && !/^[a-z][a-z0-9+.-]*:\/\//i.test(site.value.trim())) site.value = `https://${site.value.trim()}`;
     btn.disabled = true;
     say('Sending…');
     try {
       const res = await fetch(action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || data.errors) throw new Error(`HTTP ${res.status}`);
       form.reset();
       say('Thanks. Your message has been sent.');
       track('Contact Form Submit');

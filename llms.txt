@@ -15,8 +15,8 @@ Every website now has two readers: a person with a browser, and a language model
 ## Packages
 
 - Free AI snapshot: a first look at how ChatGPT, Gemini and Perplexity describe a business today. Price: free. Timeline: within a week.
-- AI visibility audit: how a business shows up across AI assistants today, and who gets cited instead. Pricing varies with scope and complexity; contact us for a quote. Timeline: scoped with your quote.
-- Monitoring retainer: tracking how AI describes a business over time, and fixing drift at the source. Pricing varies with scope and complexity; contact us for a quote. Term: scoped with your quote.
+- AI visibility audit: how a business shows up across AI assistants today, and who gets cited instead. Legible also works with the business's team and engineers to implement the recommended changes to improve AI visibility. Pricing varies with scope and complexity; contact us for a quote. Timeline: scoped with your quote.
+- Monitoring retainer: tracking how AI describes a business over time, and fixing drift at the source. Includes ongoing recommendations and re-checks as assistants change, and working with the business's team and engineers to implement updates. Pricing varies with scope and complexity; contact us for a quote. Term: scoped with your quote.
 
 ## Method
 

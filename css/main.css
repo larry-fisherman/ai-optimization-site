@@ -529,6 +529,8 @@ main:focus-visible, .lens:focus-visible { outline-offset: 6px; }
   min-height: calc(100svh - var(--nav-h));
   padding-block: var(--space-l);
 }
+/* keep the title clear of the absolutely placed Pause/Play toggle on short screens */
+.hero--media .hero__inner { padding-top: calc(var(--space-m) + 2.75rem + var(--space-xs)); }
 .hero__title {
   font-size: var(--fs-hero);
   line-height: var(--lh-display);
@@ -800,6 +802,12 @@ main:focus-visible, .lens:focus-visible { outline-offset: 6px; }
   .package { padding-inline: var(--col-gap); border-left: 1px solid var(--line); }
   .package:first-child { padding-left: 0; border-left: 0; }
 }
+.disclaimer {
+  margin-top: var(--space-xl);
+  max-width: var(--measure);
+  color: var(--fg-soft);
+  font-size: var(--fs-small);
+}
 
 /* ---------- faq: hairline rows, a thin "+" ---------- */
 .faq__list { border-top: 1px solid var(--line); }
@@ -820,22 +828,7 @@ main:focus-visible, .lens:focus-visible { outline-offset: 6px; }
 .faq__item summary::-webkit-details-marker { display: none; }
 .faq__item p { padding-bottom: var(--space-l); color: var(--fg-soft); max-width: 60ch; overflow-wrap: anywhere; }
 
-/* ---------- about: founder + how we measure ---------- */
-.about__person { display: grid; gap: var(--space-xl) var(--col-gap); align-items: end; }
-.about__photo {
-  width: 100%;
-  max-width: 28rem;
-  height: auto;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-l);
-}
-.about__text { display: grid; gap: var(--space-s); justify-items: start; min-width: 0; }
-.about__name { font-size: var(--fs-h3); overflow-wrap: anywhere; }
-.about__role { color: var(--fg-soft); overflow-wrap: anywhere; }
-.about__bio { overflow-wrap: anywhere; font-size: var(--fs-lede); line-height: 1.45; max-width: 40ch; }
-@media (min-width: 45em) {
-  .about__person { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
-}
+/* ---------- about: how we measure ---------- */
 .measure .split { margin-bottom: var(--space-xl); }
 .measures dt { font-size: var(--fs-h3); line-height: 1.1; letter-spacing: var(--track-heading); margin-bottom: var(--space-s); }
 .measures dd { overflow-wrap: anywhere; }

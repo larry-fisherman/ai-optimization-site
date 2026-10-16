@@ -63,6 +63,20 @@ class SharedChrome(unittest.TestCase):
                     b = normalise_404(b)
                 self.assertEqual(b, ref, f'{p} shared:{name} differs from index.html')
 
+    def test_footer_note(self):
+        for p in pages():
+            b = block(read(p), 'footer')
+            with self.subTest(page=p):
+                self.assertNotIn('guarantee results', b)
+                self.assertIn('hard to use', b)
+
+    def test_no_founder(self):
+        for p in pages() + ['llms.txt']:
+            src = read(p)
+            with self.subTest(page=p):
+                self.assertNotRegex(src, r'(?i)founder|lucas')
+                self.assertNotIn('"Person"', src)
+
     def test_wordmark_technologies(self):
         index = read('index.html')
         for name in ('header', 'footer'):
@@ -101,7 +115,7 @@ class JsonLd(unittest.TestCase):
         docs = [json.loads(b) for b in ld_blocks(src)]
         graph = next(d['@graph'] for d in docs if '@graph' in d)
         org = next(n for n in graph if n['@type'] == 'Organization')
-        for key in ('logo', 'founder', 'areaServed'):
+        for key in ('logo', 'areaServed'):
             self.assertIn(key, org)
         # the FAQ lives on packages.html now
         self.assertNotIn('FAQPage', src)
